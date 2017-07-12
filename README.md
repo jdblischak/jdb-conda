@@ -46,5 +46,12 @@ environ["RECIPE_DIR"] }}/LICENSE'` and download the license text from CRAN:
 4. Upload to Anaconda Cloud with `anaconda upload`
 
 
+## License
+
+Everything in this repository is in the public domain. See the file
+`LICENSE` for the text of the [Creative Commons CC0 Public Domain
+Dedication][cc0].
+
+[cc0]: https://creativecommons.org/publicdomain/zero/1.0/
 [helper]: https://github.com/bgruening/conda_r_skeleton_helper
 [repo]: https://anaconda.org/jdblischak/repo
