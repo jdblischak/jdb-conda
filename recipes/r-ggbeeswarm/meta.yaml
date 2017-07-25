@@ -1,0 +1,49 @@
+{% set version = '0.5.3' %}
+
+{% set posix = 'm2-' if win else '' %}
+{% set native = 'm2w64-' if win else '' %}
+
+package:
+  name: r-ggbeeswarm
+  version: {{ version|replace("-", "_") }}
+
+source:
+  fn: ggbeeswarm_{{ version }}.tar.gz
+  url:
+    - https://cran.r-project.org/src/contrib/ggbeeswarm_{{ version }}.tar.gz
+    - https://cran.r-project.org/src/contrib/Archive/ggbeeswarm/ggbeeswarm_{{ version }}.tar.gz
+  sha256: ede2813725144f3ce3ef24494e588aada0494b45566a9ad95384fdba7329f7c9
+
+build:
+  number: 0
+  skip: true  # [win32]
+
+  rpaths:
+    - lib/R/lib/
+    - lib/
+
+requirements:
+  build:
+    - r-base
+    - r-beeswarm
+    - r-ggplot2 >=2.0
+    - r-vipor
+
+  run:
+    - r-base
+    - r-beeswarm
+    - r-ggplot2 >=2.0
+    - r-vipor
+
+test:
+  commands:
+    - $R -e "library('ggbeeswarm')"  # [not win]
+    - "\"%R%\" -e \"library('ggbeeswarm')\""  # [win]
+
+about:
+  home: https://github.com/eclarke/ggbeeswarm
+  license: GPL (>= 2)
+  summary: Provides two methods of plotting categorical scatter plots such that the arrangement
+    of points within a category reflects the density of data at that region, and avoids
+    over-plotting.
+  license_family: GPL3
