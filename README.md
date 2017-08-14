@@ -26,31 +26,21 @@ I follow this general strategy for building the packages:
 1. Run `conda skeleton cran` via
 [bgruening/conda_r_skeleton_helper][helper]
 
-2. If the package is GPL'd, add the line `license_file: '{{
-environ["RECIPE_DIR"] }}/LICENSE'` and download the license text from CRAN:
-
-    ```
-    # GPL2
-    wget -O LICENSE https://cran.r-project.org/web/licenses/GPL-2
-    # GPL3
-    wget -O LICENSE https://cran.r-project.org/web/licenses/GPL-3
-    ```
-
-3. Build the packages with `conda build`:
+1. Build the packages with `conda build`:
 
     ```
     conda build --R 3.3.1 r-<pkgname>
     conda build --R 3.3.2 r-<pkgname>
     ```
 
-4. Upload to Anaconda Cloud with `anaconda upload`
-
+1. Upload to Anaconda Cloud with `anaconda upload`
 
 ## License
 
 Everything in this repository is in the public domain. See the file
 `LICENSE` for the text of the [Creative Commons CC0 Public Domain
-Dedication][cc0].
+Dedication][cc0]. However, each software package also has its own
+license that must be followed.
 
 [cc0]: https://creativecommons.org/publicdomain/zero/1.0/
 [helper]: https://github.com/bgruening/conda_r_skeleton_helper
