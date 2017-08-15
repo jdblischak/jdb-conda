@@ -1,0 +1,49 @@
+{% set version = '1.2.0' %}
+
+{% set posix = 'm2-' if win else '' %}
+{% set native = 'm2w64-' if win else '' %}
+
+package:
+  name: r-stringr
+  version: {{ version|replace("-", "_") }}
+
+source:
+  fn: stringr_{{ version }}.tar.gz
+  url:
+    - https://cran.r-project.org/src/contrib/stringr_{{ version }}.tar.gz
+    - https://cran.r-project.org/src/contrib/Archive/stringr/stringr_{{ version }}.tar.gz
+  sha256: 61d0b30768bbfd7c0bb89310e2de5b7b457ac504538acbcca50374b46b16129a
+
+build:
+  number: 0
+  skip: true  # [win32]
+
+  rpaths:
+    - lib/R/lib/
+    - lib/
+
+requirements:
+  build:
+    - r-base
+    - r-magrittr
+    - r-stringi >=0.4.1
+
+  run:
+    - r-base
+    - r-magrittr
+    - r-stringi >=0.4.1
+
+test:
+  commands:
+    - $R -e "library('stringr')"  # [not win]
+    - "\"%R%\" -e \"library('stringr')\""  # [win]
+
+about:
+  home: http
+  license: GPL-2
+  summary: A consistent, simple and easy to use set of wrappers around the fantastic 'stringi'
+    package. All function and argument names (and positions) are consistent, all functions
+    deal with "NA"'s and zero length vectors in the same way, and the output from one
+    function is easy to feed into the input of another.
+  license_family: GPL2
+
