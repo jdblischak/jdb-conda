@@ -15,7 +15,7 @@ source:
   sha256: 8765875573a29622c822c6a6ab0c93afe418b49bf7aec0ba0dd3c55b7e81175d
 
 build:
-  number: 0
+  number: 1
   skip: true  # [win32]
 
   rpaths:
@@ -36,6 +36,7 @@ requirements:
     - r-yaml >=2.1.5
 
   run:
+    - pandoc >=1.12.3
     - r-base
     - r-base64enc
     - r-catools
