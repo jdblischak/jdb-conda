@@ -1,0 +1,45 @@
+package:
+  name: bioconductor-flowmerge
+  version: 2.22.0
+source:
+  fn: flowMerge_2.22.0.tar.gz
+  url:
+    - http://bioconductor.org/packages/3.4/bioc/src/contrib/flowMerge_2.22.0.tar.gz
+    - https://bioarchive.galaxyproject.org/flowMerge_2.22.0.tar.gz
+    - https://depot.galaxyproject.org/software/flowMerge/flowMerge_2.22.0_src_all.tar.gz
+  md5: 098c8f84436a2ededbf2ad93420e7bdc
+build:
+  number: 0
+  rpaths:
+    - lib/R/lib/
+    - lib/
+requirements:
+  build:
+    - bioconductor-flowclust
+    - bioconductor-flowcore
+    - bioconductor-graph
+    - bioconductor-rgraphviz
+    - r-base
+    - r-feature
+    - r-foreach
+    - r-rrcov
+    - r-snow
+  run:
+    - bioconductor-flowclust
+    - bioconductor-flowcore
+    - bioconductor-graph
+    - bioconductor-rgraphviz
+    - r-base
+    - r-feature
+    - r-foreach
+    - r-rrcov
+    - r-snow
+test:
+  commands:
+    - '$R -e "library(''flowMerge'')"'
+about:
+  home: http://bioconductor.org/packages/3.4/bioc/html/flowMerge.html
+  license: Artistic-2.0
+  summary: 'Merging of mixture components for model-based automated gating of flow
+    cytometry data using the flowClust framework. Note: users should have a working
+    copy of flowClust 2.0 installed.'
