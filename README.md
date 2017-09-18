@@ -62,8 +62,8 @@ use [bioconda-utils][].
 1. Build the packages with `conda build`:
 
     ```
-    conda build --R 3.3.1 r-<pkgname>
-    conda build --R 3.3.2 r-<pkgname>
+    conda build --R 3.3.1 bioconductor-<pkgname>
+    conda build --R 3.3.2 bioconductor-<pkgname>
     ```
 
 1. Upload to Anaconda Cloud with `anaconda upload`

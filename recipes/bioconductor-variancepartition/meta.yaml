@@ -1,0 +1,53 @@
+package:
+  name: bioconductor-variancepartition
+  version: 1.4.2
+source:
+  fn: variancePartition_1.4.2.tar.gz
+  url:
+    - http://bioconductor.org/packages/3.4/bioc/src/contrib/variancePartition_1.4.2.tar.gz
+    - https://depot.galaxyproject.org/software/variancePartition/variancePartition_1.4.2_src_all.tar.gz
+  md5: 80da83c388260720cb4fd43064802669
+build:
+  number: 0
+  rpaths:
+    - lib/R/lib/
+    - lib/
+requirements:
+  build:
+    - bioconductor-biobase
+    - bioconductor-limma
+    - r-base
+    - r-colorramps
+    - r-doparallel
+    - r-foreach
+    - r-ggplot2
+    - r-gplots
+    - r-iterators
+    - 'r-lme4 >=1.1-10'
+    - r-mass
+    - 'r-pbkrtest >=0.4-4'
+    - r-reshape2
+  run:
+    - bioconductor-biobase
+    - bioconductor-limma
+    - r-base
+    - r-colorramps
+    - r-doparallel
+    - r-foreach
+    - r-ggplot2
+    - r-gplots
+    - r-iterators
+    - 'r-lme4 >=1.1-10'
+    - r-mass
+    - 'r-pbkrtest >=0.4-4'
+    - r-reshape2
+test:
+  commands:
+    - '$R -e "library(''variancePartition'')"'
+about:
+  home: http://bioconductor.org/packages/3.4/bioc/html/variancePartition.html
+  license: 'GPL (>= 2)'
+  summary: 'Quantify and interpret multiple sources of biological and technical variation
+    in gene expression experiments. Uses linear mixed model to quantify variation
+    in gene expression attributable to individual, tissue, time point, or technical
+    variables.'
