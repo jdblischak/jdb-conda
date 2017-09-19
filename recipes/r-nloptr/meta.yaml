@@ -1,0 +1,54 @@
+{% set version = '1.0.4' %}
+
+{% set posix = 'm2-' if win else '' %}
+{% set native = 'm2w64-' if win else '' %}
+
+package:
+  name: r-nloptr
+  version: {{ version|replace("-", "_") }}
+
+source:
+  fn: nloptr_{{ version }}.tar.gz
+  url:
+    - https://cran.r-project.org/src/contrib/nloptr_{{ version }}.tar.gz
+    - https://cran.r-project.org/src/contrib/Archive/nloptr/nloptr_{{ version }}.tar.gz
+  sha256: 84225b993cb1ef7854edda9629858662cc8592b0d1344baadea4177486ece1eb
+
+build:
+  number: 0
+  skip: true  # [win32]
+
+  rpaths:
+    - lib/R/lib/
+    - lib/
+
+requirements:
+  build:
+    - r-base
+    - posix                # [win]
+    - {{native}}toolchain  # [win]
+    - gcc                  # [not win]
+    - {{native}}nlopt
+
+  run:
+    - r-base
+    - {{native}}gcc-libs   # [win]
+    - libgcc               # [not win]
+    - {{native}}nlopt
+
+test:
+  commands:
+    - $R -e "library('nloptr')"  # [not win]
+    - "\"%R%\" -e \"library('nloptr')\""  # [win]
+
+about:
+  home: https://CRAN.R-project.org/package=nloptr
+  license: LGPL-3
+  summary: nloptr is an R interface to NLopt. NLopt is a free/open-source library for nonlinear
+    optimization, providing a common interface for a number of different free optimization
+    routines available online as well as original implementations of various other algorithms.
+    See http://ab-initio.mit.edu/wiki/index.php/NLopt_Introduction for more information
+    on the available algorithms. During installation on Unix the NLopt code is downloaded
+    and compiled from the NLopt website.
+  license_family: LGPL
+
