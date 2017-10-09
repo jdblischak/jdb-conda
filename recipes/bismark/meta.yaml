@@ -1,0 +1,52 @@
+# Warning: This is a temporary solution to create a conda binary for the latest
+# development version of Bismark that contains new features not present in the
+# latest official release. To do this I forked the Bismark GitHub repository and
+# created a tag for commit a9c4148. If you're reading this, my fork probably no
+# longer exists and this recipe will not work. For creating a new recipe for the
+# latest official release of Bismark, please see the bioconda recipe (on which
+# this modified recipe below is based on).
+#
+# https://github.com/bioconda/bioconda-recipes/tree/master/recipes/bismark
+
+{% set version = "0.18.2_dev_a9c4148" %}
+{% set sha256 = "a083955f83163b8bdbd200aa3198e453a15e0d4e82b94beaaf83ff803c275a52" %}
+
+package:
+  name: bismark
+  version: {{ version }}
+
+build:
+  number: 0
+
+source:
+  fn: {{ version }}.tar.gz
+  url: https://github.com/jdblischak/Bismark/archive/{{ version }}.tar.gz
+  sha256: {{ sha256 }}
+
+requirements:
+  build:
+  run:
+    - perl
+    - samtools
+    - bowtie2
+
+about:
+  home: https://www.bioinformatics.babraham.ac.uk/projects/bismark/
+  license: GNU General Public License v3 (GPLv3)
+  license_family: GPL3
+  summary: Bismark is a program to map bisulfite treated sequencing reads to a
+           genome of interest and perform methylation calls in a single step.
+           The output can be easily imported into a genome viewer, such as
+           SeqMonk, and enables a researcher to analyse the methylation levels
+           of their samples straight away.
+
+test:
+  commands:
+    - bam2nuc --help 2>&1 | grep SYNOPSIS > /dev/null
+    - bismark --help > /dev/null
+    - bismark2bedGraph --help 2>&1 | grep SYNOPSIS > /dev/null
+    - bismark2report --help 2>&1 | grep SYNOPSIS > /dev/null
+    - bismark2summary --help 2>&1 | grep SYNOPSIS > /dev/null
+    - bismark_genome_preparation --help > /dev/null
+    - bismark_methylation_extractor --help > /dev/null
+    - coverage2cytosine --help 2>&1 | grep SYNOPSIS > /dev/null
