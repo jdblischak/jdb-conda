@@ -11,8 +11,10 @@ run the following to create a conda-forge development environment. Specifying
 `-c conda-forge` sets it as the priority over other channels specified in
 `.condarc` (which can be checked with `conda config --get channels`).
 
-$ conda update -c conda-forge --all
-$ conda install -c conda-forge conda-build conda-build-all conda-smithy
+```
+conda update -c conda-forge --all
+conda install -c conda-forge conda-build conda-build-all conda-smithy
+```
 
 As an example, using this setup fixed the [error][] I was having trying to run
 `conda build-all`. Because of my `.condarc` settings, some of the packages were
