@@ -57,8 +57,11 @@ find_pkgs_for_rerender <- function(platform, builds = c("r3.3.2", "r3.4.1")) {
   pkgs <- anaconda %>%
     map_df(`[`, c("name", "version", "build", "channel", "platform", "subdir")) %>%
     filter(channel == "conda-forge", name != "r-base") %>%
-    mutate(build = str_extract(build, "r[0-9]\\.[0-9]\\.[0-9]")) %>%
+    mutate(build = str_extract(build, "r[0-9]\\.[0-9]\\.[0-9]"),
+           version = str_replace_all(version, "_", "-")) %>%
     group_by(name) %>%
+    # Only consider the latest version of the recipe
+    filter(as.numeric_version(version) == max(as.numeric_version(version))) %>%
     summarize(rerender = !all(builds %in% build))
   return(pkgs)
 }
