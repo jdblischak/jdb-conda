@@ -27,6 +27,7 @@ suppressPackageStartupMessages(library("dplyr"))
 suppressPackageStartupMessages(library("gh"))
 suppressPackageStartupMessages(library("git2r"))
 suppressPackageStartupMessages(library("jsonlite"))
+suppressPackageStartupMessages(library("lubridate"))
 suppressPackageStartupMessages(library("purrr"))
 suppressPackageStartupMessages(library("stringr"))
 suppressPackageStartupMessages(library("yaml"))
@@ -235,6 +236,7 @@ main <- function(package = NULL, dry_run = FALSE, all = FALSE, limit = 10,
   for (pkg in package) {
     cat(sprintf("Processing %s\n", pkg))
     feedstock <- paste0(pkg, "-feedstock")
+
     # Check for an existing Pull Request
     # https://developer.github.com/v3/pulls/#list-pull-requests
     pr_existing <- gh("/repos/:owner/:repo/pulls", owner = "conda-forge",
@@ -247,6 +249,19 @@ main <- function(package = NULL, dry_run = FALSE, all = FALSE, limit = 10,
         next
       }
     }
+
+    # Check for a recently merged Pull Request
+    pr_merged <- gh("/repos/:owner/:repo/pulls", owner = "conda-forge",
+                      repo = feedstock, state = "closed")
+    if (!all(pr_merged == "")) {
+      merge_times <- pr_merged %>% map_chr("merged_at") %>% as_datetime()
+      if (any(Sys.time() - merge_times < 72)) {
+        cat(sprintf("Skipping %s because a PR was merged in the last 72 hours:\n%s\n",
+                    pkg, paste0("https://github.com/conda-forge/", feedstock, "/pulls")))
+        next
+      }
+    }
+
     # Check for an existing Issue
     # https://developer.github.com/v3/issues/#list-issues-for-a-repository
     issue_existing <- gh("/repos/:owner/:repo/issues", owner = "conda-forge",
