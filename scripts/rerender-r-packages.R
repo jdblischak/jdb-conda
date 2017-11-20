@@ -247,6 +247,10 @@ main <- function(package = NULL, dry_run = FALSE, all = FALSE, limit = 10,
         cat(sprintf("Skipping %s because a conda-smithy PR already exists:\n%s\n",
                     pkg, paste0("https://github.com/conda-forge/", feedstock, "/pulls")))
         next
+      } else {
+        cat(sprintf("Skipping %s because a PR is currently open:\n%s\n",
+                    pkg, paste0("https://github.com/conda-forge/", feedstock, "/pulls")))
+        next
       }
     }
 
@@ -292,6 +296,8 @@ main <- function(package = NULL, dry_run = FALSE, all = FALSE, limit = 10,
                                 head = paste(login$login, b@name, sep = ":"),
                                 base = "master",
                                 body = "")
+      cat(sprintf("PR submitted for %s:\n%s\n", pkg,
+                  paste0("https://github.com/conda-forge/", feedstock, "/pulls")))
     } else {
       cat(sprintf("Rerendering %s had no effect.\n", pkg))
     }
