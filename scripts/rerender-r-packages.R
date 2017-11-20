@@ -254,8 +254,10 @@ main <- function(package = NULL, dry_run = FALSE, all = FALSE, limit = 10,
     pr_merged <- gh("/repos/:owner/:repo/pulls", owner = "conda-forge",
                       repo = feedstock, state = "closed")
     if (!all(pr_merged == "")) {
-      merge_times <- pr_merged %>% map_chr("merged_at") %>% as_datetime()
-      if (any(Sys.time() - merge_times < 72)) {
+      merge_times <- pr_merged %>%
+        map_chr("merged_at", .default = NA) %>%
+        as_datetime()
+      if (any(Sys.time() - merge_times < 72, na.rm = TRUE)) {
         cat(sprintf("Skipping %s because a PR was merged in the last 72 hours:\n%s\n",
                     pkg, paste0("https://github.com/conda-forge/", feedstock, "/pulls")))
         next
