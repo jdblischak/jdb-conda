@@ -239,7 +239,7 @@ main <- function(package = NULL, dry_run = FALSE, all = FALSE, limit = 10,
     # https://developer.github.com/v3/pulls/#list-pull-requests
     pr_existing <- gh("/repos/:owner/:repo/pulls", owner = "conda-forge",
                       repo = feedstock, state = "open")
-    if (!identical(pr_existing, "")) {
+    if (!all(pr_existing == "")) {
       pr_titles <- pr_existing %>% map_chr("title")
       if (any(str_detect(pr_titles, "conda-smithy"))) {
         cat(sprintf("Skipping %s because a conda-smithy PR already exists:\n%s\n",
@@ -251,7 +251,7 @@ main <- function(package = NULL, dry_run = FALSE, all = FALSE, limit = 10,
     # https://developer.github.com/v3/issues/#list-issues-for-a-repository
     issue_existing <- gh("/repos/:owner/:repo/issues", owner = "conda-forge",
                       repo = feedstock, state = "open")
-    if (!identical(issue_existing, "")) {
+    if (!all(issue_existing == "")) {
       cat(sprintf("Skipping %s because an Issue is already open:\n%s\n",
                   pkg, paste0("https://github.com/conda-forge/", feedstock, "/issues")))
       next
