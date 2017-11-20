@@ -141,6 +141,25 @@ rerender_feedstock <- function(path, max_attempts = 3) {
   stop(out, "\n\nconda-smithy failed when trying to rerender the feedstock")
 }
 
+# Determine if a new build was added by conda-smithy by counting the number
+# of lines added.
+#
+# r - git_repository that had `conda smithy rerender --commit auto` applied
+#
+# Returns of number of added lines.
+count_smithy_additions <- function(r) {
+  stopifnot(class(r) == "git_repository")
+  git_log <- commits(r)
+  tree_1 <- tree(git_log[[2]])
+  tree_2 <- tree(git_log[[1]])
+  git_diff <- diff(tree_1, tree_2, as_char = TRUE)
+  git_diff_lines <- str_split(git_diff, "\n")[[1]]
+  # Select all lines that start with only 1 + (excludes the lines
+  # stating the filenames, which start with +++ and ---)
+  git_diff_lines_added <- str_detect(git_diff_lines, "^[+]{1,1}[^+]")
+  return(sum(git_diff_lines_added))
+}
+
 # https://developer.github.com/v3/pulls/#create-a-pull-request
 submit_pull_request <- function(owner, repo, title, head, base, body,
                                 maintainer_can_modify = TRUE) {
@@ -228,13 +247,26 @@ main <- function(package = NULL, dry_run = FALSE, all = FALSE, limit = 10,
         next
       }
     }
+    # Check for an existing Issue
+    # https://developer.github.com/v3/issues/#list-issues-for-a-repository
+    issue_existing <- gh("/repos/:owner/:repo/issues", owner = "conda-forge",
+                      repo = feedstock, state = "open")
+    if (issue_existing != "") {
+      cat(sprintf("Skipping %s because an Issue is already open:\n%s\n",
+                  pkg, paste0("https://github.com/conda-forge/", feedstock, "/issues")))
+      next
+    }
 
     fork <- fork_repo(feedstock)
     r <- clone(fork$ssh_url, local_path = file.path(path, fork$name))
     b <- create_feature_branch(r)
     conda_smithy <- rerender_feedstock(workdir(r))
-    # Only push and pull request if new commits have been made
-    if (branch_target(b) != branch_target(branches(r)$master)) {
+
+    # Only push and pull request if a new commit was made by conda-smithy and
+    # the changes are non-trivial (arbitrarily defined as adding at least 4
+    # lines).
+    if (branch_target(b) != branch_target(branches(r)$master) &&
+        count_smithy_additions(r) >= 4) {
       push(r, name = "origin", refspec = paste0("refs/heads/", b@name))
       last_commit_message <- commits(r)[[1]]@summary
       pr <- submit_pull_request(owner = "conda-forge", repo = feedstock,
