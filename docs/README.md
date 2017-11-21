@@ -8,3 +8,6 @@
 
 * `create-recipe-cran.md` - Directions to create a recipe for a CRAN R
   package.
+
+* `submit-bioconda-bioc.md` - Directions to create and test a recipe for a
+  Bioconductor R package for submission to bioconda.
