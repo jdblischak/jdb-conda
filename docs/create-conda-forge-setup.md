@@ -14,6 +14,8 @@ run the following to create a conda-forge development environment. Specifying
 ```
 conda update -c conda-forge --all
 conda install -c conda-forge conda-build conda-build-all conda-smithy
+# For Bash autocompletion
+conda install -c conda-forge argcomplete
 ```
 
 As an example, using this setup fixed the [error][] I was having trying to run
