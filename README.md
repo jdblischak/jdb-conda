@@ -4,6 +4,8 @@ This repository contains my personal documentation, recipes, and
 scripts for creating, using, and maintaining software packages using
 the [conda][] package manager.
 
+* `docker/` - Dockerfiles to create testing containers
+
 * `docs/` - Documentation for using [conda][]
 
 * `recipes/` - Recipes for building the conda packages I have uploaded
