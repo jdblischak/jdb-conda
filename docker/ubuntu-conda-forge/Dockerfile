@@ -17,6 +17,7 @@ RUN apt-get update && \
 		   emacs \
 		   git \
 		   less \
+                   nano \
     && rm -rf /var/lib/apt/lists/*
 
 # Install the latest Miniconda with Python 3 and update everything.
@@ -32,6 +33,9 @@ RUN curl -s -L https://repo.continuum.io/miniconda/Miniconda3-4.3.21-Linux-x86_6
 # Install conda build and deployment tools.
 RUN conda install --yes --quiet conda-build anaconda-client jinja2 setuptools && \
     conda clean -tipsy
+
+# Install tools for interactive analysis
+RUN conda install --yes --quiet ipython ipdb
 
 RUN git clone https://github.com/conda-forge/staged-recipes.git ~/staged-recipes
 
