@@ -3,11 +3,14 @@
 * `create-conda-forge-setup.md` - Directions to create a conda setup
   that mimics the CI builds for conda-forge.
 
-* `create-recipe-bioc.md` - Directions to create a recipe for a
-  Bioconductor R package.
-
 * `create-recipe-cran.md` - Directions to create a recipe for a CRAN R
+  package.
+
+* `create-recipe-github.md` - Directions to create a recipe for a GitHub R
   package.
 
 * `submit-bioconda-bioc.md` - Directions to create and test a recipe for a
   Bioconductor R package for submission to bioconda.
+
+* `create-recipe-bioc.md` - Directions to create a recipe for a
+  Bioconductor R package.
