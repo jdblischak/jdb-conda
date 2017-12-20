@@ -170,6 +170,19 @@ submit_pull_request <- function(owner, repo, title, head, base, body,
   return(pr)
 }
 
+# https://developer.github.com/v3/issues/#create-an-issue
+create_issue <- function(owner, repo, title = NULL, body = NULL) {
+  if (is.null(title)) {
+    title <- "Missing build"
+  }
+  if (is.null(body)) {
+    body <- "Try restarting any failed CI builds (all the dependencies should be available). Please record your attempts here to avoid duplicating effort and CI time."
+  }
+  issue <- gh("POST /repos/:owner/:repo/issues", owner = owner, repo = repo,
+           title = title, body = body)
+  return(issue)
+}
+
 # Main -------------------------------------------------------------------------
 
 main <- function(package = NULL, dry_run = FALSE, all = FALSE, limit = 10,
@@ -300,6 +313,8 @@ main <- function(package = NULL, dry_run = FALSE, all = FALSE, limit = 10,
                   paste0("https://github.com/conda-forge/", feedstock, "/pulls")))
     } else {
       cat(sprintf("Rerendering %s had no effect.\n", pkg))
+      issue <- create_issue(owner = "conda-forge", repo = feedstock)
+      cat(sprintf("Opened Issue %s\n", issue$html_url))
     }
   }
 }
