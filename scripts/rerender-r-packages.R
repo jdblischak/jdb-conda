@@ -291,6 +291,16 @@ main <- function(package = NULL, dry_run = FALSE, all = FALSE, limit = 10,
       next
     }
 
+    # Skip package if feedstock was created in the last 3 days
+    # https://developer.github.com/v3/repos/#get
+    feedstock_info <- gh("/repos/:owner/:repo", owner = "conda-forge",
+                         repo = feedstock)
+    created_at <- as_datetime(feedstock_info$created_at)
+    if (Sys.time() - created_at < 72) {
+      cat(sprintf("Skipping %s because created in last 3 days\n", pkg))
+      next
+    }
+
     fork <- fork_repo(feedstock)
     r <- clone(fork$ssh_url, local_path = file.path(path, fork$name),
                progress = FALSE)
