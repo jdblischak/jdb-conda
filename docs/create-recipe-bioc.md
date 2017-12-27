@@ -18,14 +18,14 @@ use [bioconda-utils][].
     #conda config --add channels bioconda
     conda create -n bioconductor-recipes --file requirements.txt
     source activate bioconductor-recipes
-    ./bioconductor_skeleton.py --recipes . --bioc-version 3.4 <case-sensitive-pkgname>
+    ./bioconductor_skeleton.py --recipes . --bioc-version 3.5 <case-sensitive-pkgname>
     source deactivate
     ```
 
 1. Build the packages with `conda build`:
 
     ```
-    conda build --R 3.3.1 bioconductor-<pkgname>
+    conda build --R 3.4.1 bioconductor-<pkgname>
     conda build --R 3.3.2 bioconductor-<pkgname>
     ```
 

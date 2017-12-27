@@ -28,8 +28,13 @@ Caveats:
 1. The packages in my channel are mainly available for the linux-64
 architecture, with only a few built for osx-64.
 
-1. The R packages in my channel are mainly available for use with R
-3.3.2, with only a few built for R 3.3.1.
+1. The R packages in my channel are mainly available for the most
+recent version of R supported by the conda-forge channel, with only a
+few built for previous versions of R.
+
+1. Packages in my channel should be considered temporary. I do my best
+to migrate them to the conda-forge channel as quickly as possible, at
+which point I remove them from my channel.
 
 ## License
 
