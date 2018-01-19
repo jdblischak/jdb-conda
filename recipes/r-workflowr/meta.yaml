@@ -1,4 +1,4 @@
-{% set version = '0.9.0' %}
+{% set version = '0.10.0' %}
 
 {% set posix = 'm2-' if win else '' %}
 {% set native = 'm2w64-' if win else '' %}
@@ -8,21 +8,15 @@ package:
   version: {{ version|replace("-", "_") }}
 
 source:
-
-
   git_url: https://github.com/jdblischak/workflowr
-  git_tag: v0.9.0
+  git_tag: v0.10.0
 
 build:
-  # If this is a new build for the same version, increment the build number.
   number: 0
-
-  # This is required to make R link correctly on Linux.
   rpaths:
     - lib/R/lib/
     - lib/
 
-# Suggests: covr, devtools, knitr, testthat
 requirements:
   build:
     - r-base
@@ -52,43 +46,12 @@ requirements:
 
 test:
   commands:
-    # You can put additional test commands to be run here.
     - $R -e "library('workflowr')"  # [not win]
     - "\"%R%\" -e \"library('workflowr')\""  # [win]
 
-  # You can also put a file called run_test.py, run_test.sh, or run_test.bat
-  # in the recipe that will be run at test time.
-
-  # requires:
-    # Put any additional test requirements here.
-
 about:
-  home: https
-  license: MIT + file LICENSE
+  home: https://github.com/jdblischak/workflowr
+  license: MIT
   summary: workflowr provides helper functions to get started using R Markdown to create a research
     website.
   license_family: MIT
-
-# The original CRAN metadata for this package was:
-
-# Package: workflowr
-# Type: Package
-# Title: A workflow template for creating a research website
-# Version: 0.9.0
-# Authors@R: c( person("John", "Blischak", role = c("aut", "cre"), email = "jdblischak@uchicago.edu"), person("Peter", "Carbonetto", role = c("aut")), person("Matthew", "Stephens", role = c("aut")))
-# Description: workflowr provides helper functions to get started using R Markdown to create a research website.
-# URL: https://github.com/jdblischak/workflowr
-# BugReports: https://github.com/jdblischak/workflowr/issues
-# Depends: R (>= 3.2.5), rmarkdown (>= 0.9.6)
-# License: MIT + file LICENSE
-# Encoding: UTF-8
-# LazyData: true
-# Imports: callr, getPass, git2r, methods, rprojroot, rstudioapi, R.utils, stringr (>= 1.1.0), tools, utils, whisker, yaml
-# RoxygenNote: 6.0.1
-# Suggests: covr, devtools, knitr, testthat
-# VignetteBuilder: knitr
-# SystemRequirements: pandoc (>= 1.12.3) - http://pandoc.org
-
-# See
-# http://docs.continuum.io/conda/build.html for
-# more information about meta.yaml
