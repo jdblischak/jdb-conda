@@ -274,7 +274,8 @@ main <- function(package = NULL, dry_run = FALSE, all = FALSE, limit = 10,
       merge_times <- pr_merged %>%
         map_chr("merged_at", .default = NA) %>%
         as_datetime()
-      if (any(Sys.time() - merge_times < 72, na.rm = TRUE)) {
+      time_buffer_pr <- as.difftime(3, units = "days")
+      if (any(Sys.time() - merge_times < time_buffer_pr, na.rm = TRUE)) {
         cat(sprintf("Skipping %s because a PR was merged in the last 72 hours:\n%s\n",
                     pkg, paste0("https://github.com/conda-forge/", feedstock, "/pulls")))
         next
@@ -296,7 +297,8 @@ main <- function(package = NULL, dry_run = FALSE, all = FALSE, limit = 10,
     feedstock_info <- gh("/repos/:owner/:repo", owner = "conda-forge",
                          repo = feedstock)
     created_at <- as_datetime(feedstock_info$created_at)
-    if (Sys.time() - created_at < 72) {
+    time_buffer_creation <- as.difftime(3, units = "days")
+    if (Sys.time() - created_at < time_buffer_creation) {
       cat(sprintf("Skipping %s because created in last 3 days\n", pkg))
       next
     }
