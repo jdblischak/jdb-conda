@@ -147,13 +147,13 @@ rerender_feedstock <- function(path, max_attempts = 3) {
   stop(out, "\n\nconda-smithy failed when trying to rerender the feedstock")
 }
 
-# Determine if a new build was added by conda-smithy by counting the number
-# of lines added.
+# Determine if a new build was added by conda-smithy by checking for the string
+# CONDA_R.
 #
 # r - git_repository that had `conda smithy rerender --commit auto` applied
 #
-# Returns of number of added lines.
-count_smithy_additions <- function(r) {
+# Returns TRUE if CONDA_R detected in new lines, otherwise FALSE.
+check_smithy_additions <- function(r) {
   stopifnot(class(r) == "git_repository")
   git_log <- commits(r)
   tree_1 <- tree(git_log[[2]])
@@ -162,8 +162,10 @@ count_smithy_additions <- function(r) {
   git_diff_lines <- str_split(git_diff, "\n")[[1]]
   # Select all lines that start with only 1 + (excludes the lines
   # stating the filenames, which start with +++ and ---)
-  git_diff_lines_added <- str_detect(git_diff_lines, "^[+]{1,1}[^+]")
-  return(sum(git_diff_lines_added))
+  git_diff_lines_added <- str_subset(git_diff_lines, "^[+]{1,1}[^+]")
+  # Do any of the added lines include CONDA_R?
+  conda_r_lines <- str_detect(git_diff_lines_added, "CONDA_R")
+  return(any(conda_r_lines))
 }
 
 # https://developer.github.com/v3/pulls/#create-a-pull-request
@@ -316,10 +318,9 @@ main <- function(package = NULL, dry_run = FALSE, all = FALSE, limit = 10,
     conda_smithy <- rerender_feedstock(workdir(r))
 
     # Only push and pull request if a new commit was made by conda-smithy and
-    # the changes are non-trivial (arbitrarily defined as adding at least 4
-    # lines).
+    # the changes include adding a new version of R.
     if (branch_target(b) != branch_target(branches(r)$master) &&
-        count_smithy_additions(r) >= 4) {
+        check_smithy_additions(r)) {
       push(r, name = "origin", refspec = paste0("refs/heads/", b@name))
       last_commit_message <- commits(r)[[1]]@summary
       pr <- submit_pull_request(owner = "conda-forge", repo = feedstock,
