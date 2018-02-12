@@ -7,7 +7,11 @@ Options:
 -h --help              Show this screen
 -n --dry-run           Dry run
 -a --all               Rerender all packages with dependencies available
--l --limit=<l>         Limit the maximum number of packages to attempt to update [default: 10]
+-l --limit=<l>         Limit the maximum number of packages to attempt to update
+                       [default: 10]
+-b --buffer=<b>        Buffer time (hours) to wait for CI builds to finish after
+                       creating a feedstock or merging a PR [default: 72].
+                       Feedstocks within the buffer time are automatically skipped.
 -p --path=<p>          Path on local machine to save intermediate files
 Arguments:
 package               Zero or more R packages using conda syntax, e.g. r-ggplot2" -> doc
@@ -186,7 +190,10 @@ create_issue <- function(owner, repo, title = NULL, body = NULL) {
 # Main -------------------------------------------------------------------------
 
 main <- function(package = NULL, dry_run = FALSE, all = FALSE, limit = 10,
-                 path = NULL) {
+                 buffer = 72, path = NULL) {
+
+  buffer <- as.difftime(buffer, units = "hours")
+
   # Find packages that need rerendered because they are not available for R
   # 3.4.1
   linux_64 <- find_pkgs_for_rerender("linux-64")
@@ -274,8 +281,7 @@ main <- function(package = NULL, dry_run = FALSE, all = FALSE, limit = 10,
       merge_times <- pr_merged %>%
         map_chr("merged_at", .default = NA) %>%
         as_datetime()
-      time_buffer_pr <- as.difftime(3, units = "days")
-      if (any(Sys.time() - merge_times < time_buffer_pr, na.rm = TRUE)) {
+      if (any(Sys.time() - merge_times < buffer, na.rm = TRUE)) {
         cat(sprintf("Skipping %s because a PR was merged in the last 72 hours:\n%s\n",
                     pkg, paste0("https://github.com/conda-forge/", feedstock, "/pulls")))
         next
@@ -297,8 +303,7 @@ main <- function(package = NULL, dry_run = FALSE, all = FALSE, limit = 10,
     feedstock_info <- gh("/repos/:owner/:repo", owner = "conda-forge",
                          repo = feedstock)
     created_at <- as_datetime(feedstock_info$created_at)
-    time_buffer_creation <- as.difftime(3, units = "days")
-    if (Sys.time() - created_at < time_buffer_creation) {
+    if (Sys.time() - created_at < buffer) {
       cat(sprintf("Skipping %s because created in last 3 days\n", pkg))
       next
     }
@@ -345,5 +350,6 @@ if (!interactive()) {
        dry_run = opts$`dry-run`,
        all = opts$all,
        limit = as.numeric(opts$limit),
+       buffer = as.numeric(opts$buffer),
        path = opts$path)
 }
