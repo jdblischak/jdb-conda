@@ -18,12 +18,48 @@ Arguments:
 package               Zero or more R packages using conda syntax, e.g. r-ggplot2" -> doc
 
 # Requirements:
-#   R and various packages
-#   conda-build 2
-#   conda-smithy
-#   GITHUB_PAT
-#   SSH keys ~/.ssh
 #
+# 1. Install conda-build (v2) and conda-smithy:
+#
+# conda install -c conda-forge conda-build conda-smithy
+#
+# These packages have to be installed in the root environment. I'd advise
+# creating a separate, isolated conda installation for maintaining conda-forge
+# packages.
+#
+# 2. Install R packages:
+#
+# install.packages("docopt", "dplyr", "gh", "git2r", "jsonlite", "lubridate",
+# "purrr", "stringr", "yaml")
+#
+# or
+#
+# conda install r-docopt r-dplyr r-gh r-git2r r-jsonlite r-lubridate r-purrr
+# r-stringr r-yaml
+#
+# 3. Create a GitHub Personal Access Token:
+#
+# Follow these directions:
+# https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line/
+#
+# Add the permissions: repo:status, public_repo, read:org
+#
+# Export the token as GITHUB_PAT in your .Renviron file.
+#
+# WARNING: This token must be kept private! It is no different than your
+# password. If you are using a personal laptop, you don't have to worry much.
+# But if you are on a shared machine, make sure only you can read the file.
+#
+# chmod 600 ~/.Renviron
+#
+# 4. Setup SSH keys:
+#
+# I use SSH keys to authenticate with GitHub. It may be possible to use HTTPS
+# with this script, but I haven't actually tested it. Also, if your SSH keys
+# have a passphrase, you may need to unlock them first by running a Git command
+# in the Terminal.
+#
+# https://help.github.com/articles/connecting-to-github-with-ssh/
 
 # Packages ---------------------------------------------------------------------
 
@@ -311,10 +347,13 @@ main <- function(package = NULL, dry_run = FALSE, all = FALSE, limit = 10,
       next
     }
 
+    cat("  * Forking feedstock repo\n")
     fork <- fork_repo(feedstock)
+    cat("  * Cloning feedstock repo\n")
     r <- clone(fork$ssh_url, local_path = file.path(path, fork$name),
                progress = FALSE)
     b <- create_feature_branch(r)
+    cat("  * Rerendering feedstock repo\n")
     conda_smithy <- rerender_feedstock(workdir(r))
 
     # Only push and pull request if a new commit was made by conda-smithy and
