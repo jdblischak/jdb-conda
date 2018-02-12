@@ -12,6 +12,7 @@ Options:
 -b --buffer=<b>        Buffer time (hours) to wait for CI builds to finish after
                        creating a feedstock or merging a PR [default: 72].
                        Feedstocks within the buffer time are automatically skipped.
+-i --issue             Open an Issue if the CI needs restarted.
 -p --path=<p>          Path on local machine to save intermediate files
 Arguments:
 package               Zero or more R packages using conda syntax, e.g. r-ggplot2" -> doc
@@ -190,7 +191,7 @@ create_issue <- function(owner, repo, title = NULL, body = NULL) {
 # Main -------------------------------------------------------------------------
 
 main <- function(package = NULL, dry_run = FALSE, all = FALSE, limit = 10,
-                 buffer = 72, path = NULL) {
+                 buffer = 72, issue = FALSE, path = NULL) {
 
   buffer <- as.difftime(buffer, units = "hours")
 
@@ -330,8 +331,10 @@ main <- function(package = NULL, dry_run = FALSE, all = FALSE, limit = 10,
                   paste0("https://github.com/conda-forge/", feedstock, "/pulls")))
     } else {
       cat(sprintf("Rerendering %s had no effect.\n", pkg))
-      issue <- create_issue(owner = "conda-forge", repo = feedstock)
-      cat(sprintf("Opened Issue %s\n", issue$html_url))
+      if (issue) {
+        issue <- create_issue(owner = "conda-forge", repo = feedstock)
+        cat(sprintf("Opened Issue %s\n", issue$html_url))
+      }
     }
   }
 }
@@ -351,5 +354,6 @@ if (!interactive()) {
        all = opts$all,
        limit = as.numeric(opts$limit),
        buffer = as.numeric(opts$buffer),
+       issue = opts$issue,
        path = opts$path)
 }
