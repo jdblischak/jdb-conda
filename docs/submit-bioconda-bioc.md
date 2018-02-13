@@ -1,5 +1,9 @@
 # Submit Bioconductor R package recipe to bioconda
 
+**WARNING:** These docs are now outdated. Bioconda has migrated away from
+  `simulate-travis.py` and now [recommends locally running the Circle CI
+  client][circle-ci-client].
+
 The steps belows detail how I create and test a recipe for a Bioconductor R
 package for submission to bioconda. Adapted from the relevant documentation:
 
@@ -83,5 +87,6 @@ name, not the path to the package:
 [bioconda-contributing-overview]: https://bioconda.github.io/contributing.html
 [bioconda-recipes]: https://github.com/bioconda/bioconda-recipes
 [bioconda-utils]: https://github.com/bioconda/bioconda-utils
+[circle-ci-client]: https://bioconda.github.io/contrib-setup.html#install-the-circle-ci-client-optional
 [conda-isolated]: https://bioconda.github.io/contribute-a-recipe.html#build-an-isolated-conda-installation-with-dependencies
 [r-bioc-recipes]: https://bioconda.github.io/guidelines.html#r-bioconductor
