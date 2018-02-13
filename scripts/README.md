@@ -2,6 +2,13 @@
 
 This directory contains utility scripts for maintaing conda packages.
 
+* `rerender-r-packages.R` - Helper script to identify conda-forge R packages
+that are missing builds and have all dependencies met. Rerenders the feedstocks
+and sends a Pull Request.
+
+* `delete-my-feedstocks.R` - Delete any feedstock forks that have no open Pull
+Requests or Issues.
+
 * `conda-forge-cran.R` - Helper script to identify conda-forge R
  packages that have more recent versions released on CRAN.
 
