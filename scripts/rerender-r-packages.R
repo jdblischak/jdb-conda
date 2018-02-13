@@ -13,6 +13,7 @@ Options:
                        creating a feedstock or merging a PR [default: 72].
                        Feedstocks within the buffer time are automatically skipped.
 -i --issue             Open an Issue if the CI needs restarted.
+-f --force             Force submission of a PR even if no new R version is added.
 -p --path=<p>          Path on local machine to save intermediate files
 Arguments:
 package               Zero or more R packages using conda syntax, e.g. r-ggplot2" -> doc
@@ -229,7 +230,7 @@ create_issue <- function(owner, repo, title = NULL, body = NULL) {
 # Main -------------------------------------------------------------------------
 
 main <- function(package = NULL, dry_run = FALSE, all = FALSE, limit = 10,
-                 buffer = 72, issue = FALSE, path = NULL) {
+                 buffer = 72, issue = FALSE, force = FALSE, path = NULL) {
 
   buffer <- as.difftime(buffer, units = "hours")
 
@@ -357,9 +358,10 @@ main <- function(package = NULL, dry_run = FALSE, all = FALSE, limit = 10,
     conda_smithy <- rerender_feedstock(workdir(r))
 
     # Only push and pull request if a new commit was made by conda-smithy and
-    # the changes include adding a new version of R.
+    # the changes include adding a new version of R. If `force = TRUE`, PR is
+    # submitted as long as a new commit is made.
     if (branch_target(b) != branch_target(branches(r)$master) &&
-        check_smithy_additions(r)) {
+        (check_smithy_additions(r) || force)) {
       push(r, name = "origin", refspec = paste0("refs/heads/", b@name))
       last_commit_message <- commits(r)[[1]]@summary
       pr <- submit_pull_request(owner = "conda-forge", repo = feedstock,
@@ -395,5 +397,6 @@ if (!interactive()) {
        limit = as.numeric(opts$limit),
        buffer = as.numeric(opts$buffer),
        issue = opts$issue,
+       force = opts$force,
        path = opts$path)
 }
