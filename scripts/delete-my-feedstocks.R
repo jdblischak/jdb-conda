@@ -78,6 +78,12 @@ get_my_repos <- function(...) {
 main <- function(feedstock = NULL, dry_run = FALSE, all = FALSE, limit = 10,
                  force = FALSE) {
 
+  if (all && force) {
+    stop("Cannot simultaneously set options all and force. ",
+         "Only use force for specific feedstocks you know you want to delete.",
+         call. = FALSE)
+  }
+
   # Login to GitHub with Personal Access Token
   if (Sys.getenv("GITHUB_PAT") == "") {
     stop("You need to generate a GitHub personal access token and ",
@@ -155,6 +161,10 @@ main <- function(feedstock = NULL, dry_run = FALSE, all = FALSE, limit = 10,
 
 if (!interactive()) {
   opts <- docopt(doc)
+  # Pass NULL to main() if no feedstocks specified at command-line
+  if (length(opts$feedstock) == 0) {
+    opts$feedstock <- NULL
+  }
   main(feedstock = opts$feedstock,
        dry_run = opts$`dry-run`,
        all = opts$all,
