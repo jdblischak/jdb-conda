@@ -379,6 +379,15 @@ main <- function(package = NULL, dry_run = FALSE, all = FALSE, limit = 10,
                   paste0("https://github.com/conda-forge/", feedstock, "/pulls")))
     } else {
       cat(sprintf("Rerendering %s had no effect.\n", pkg))
+      if (pkg %in% linux_64$name[linux_64$rerender]) {
+        cat("Check Circle CI builds.\n")
+      }
+      if (pkg %in% osx_64$name[osx_64$rerender]) {
+        cat("Check Travis CI builds.\n")
+      }
+      if (pkg %in% win_64$name[win_64$rerender]) {
+        cat("Check Appveyor builds.\n")
+      }
       if (issue) {
         issue <- create_issue(owner = "conda-forge", repo = feedstock)
         cat(sprintf("Opened Issue %s\n", issue$html_url))
