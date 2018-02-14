@@ -411,6 +411,12 @@ if (!interactive()) {
                 paste(invalid, collapse = " ")))
     docopt(doc, "-h")
   }
+  # If no packages are specified at the command line, this is passed as list().
+  # It would be more consistent if it was chr(0), but oh well. Convert this to
+  # NULL before passing to main().
+  if (length(opts$package) == 0) {
+    opts$package <- NULL
+  }
   main(package = opts$package,
        dry_run = opts$`dry-run`,
        all = opts$all,
