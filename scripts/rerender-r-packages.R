@@ -14,6 +14,7 @@ Options:
                        Feedstocks within the buffer time are automatically skipped.
 -i --issue             Open an Issue if the CI needs restarted
 -f --force             Force submission of a PR even if no new R version is added
+-r --reverse           Reverse the order in which the packages are rerendered
 -p --path=<p>          Path on local machine to save intermediate files
 Arguments:
 package               Zero or more R packages using conda syntax, e.g. r-ggplot2" -> doc
@@ -230,7 +231,8 @@ create_issue <- function(owner, repo, title = NULL, body = NULL) {
 # Main -------------------------------------------------------------------------
 
 main <- function(package = NULL, dry_run = FALSE, all = FALSE, limit = 10,
-                 buffer = 72, issue = FALSE, force = FALSE, path = NULL) {
+                 buffer = 72, issue = FALSE, force = FALSE, reverse = FALSE,
+                 path = NULL) {
 
   if (all && force) {
     stop("Cannot simultaneously set options all and force. ",
@@ -273,6 +275,9 @@ main <- function(package = NULL, dry_run = FALSE, all = FALSE, limit = 10,
   }
   if (all) {
     package <- unique(c(package, leaves))
+  }
+  if (reverse) {
+    package <- sort(package, decreasing = TRUE)
   }
   package <- package[seq_len(min(length(package), limit))]
   cat("Packages to rerender:\n\n")
@@ -413,5 +418,6 @@ if (!interactive()) {
        buffer = as.numeric(opts$buffer),
        issue = opts$issue,
        force = opts$force,
+       reverse = opts$reverse,
        path = opts$path)
 }
