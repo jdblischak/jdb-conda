@@ -12,8 +12,8 @@ Options:
 -b --buffer=<b>        Buffer time (hours) to wait for CI builds to finish after
                        creating a feedstock or merging a PR [default: 72].
                        Feedstocks within the buffer time are automatically skipped.
--i --issue             Open an Issue if the CI needs restarted.
--f --force             Force submission of a PR even if no new R version is added.
+-i --issue             Open an Issue if the CI needs restarted
+-f --force             Force submission of a PR even if no new R version is added
 -p --path=<p>          Path on local machine to save intermediate files
 Arguments:
 package               Zero or more R packages using conda syntax, e.g. r-ggplot2" -> doc
@@ -231,6 +231,12 @@ create_issue <- function(owner, repo, title = NULL, body = NULL) {
 
 main <- function(package = NULL, dry_run = FALSE, all = FALSE, limit = 10,
                  buffer = 72, issue = FALSE, force = FALSE, path = NULL) {
+
+  if (all && force) {
+    stop("Cannot simultaneously set options all and force. ",
+         "Only use force for specific packages you know need to be rerendered.",
+         call. = FALSE)
+  }
 
   buffer <- as.difftime(buffer, units = "hours")
 
