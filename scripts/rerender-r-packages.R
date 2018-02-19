@@ -36,8 +36,10 @@ package               Zero or more R packages using conda syntax, e.g. r-ggplot2
 #
 # or
 #
-# conda install r-docopt r-dplyr r-gh r-git2r r-jsonlite r-lubridate r-purrr
-# r-stringr r-yaml
+# conda install r-docopt r-dplyr r-gh r-git2r r-jsonlite r-lubridate \
+# 'r-purrr>=0.2.3' r-stringr r-yaml
+#
+# Requires purrr >= 0.2.3
 #
 # 3. Create a GitHub Personal Access Token:
 #
