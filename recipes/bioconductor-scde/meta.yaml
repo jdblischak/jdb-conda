@@ -1,0 +1,89 @@
+{% set version = '1.99.1' %}
+{% set posix = 'm2-' if win else '' %}
+{% set native = 'm2w64-' if win else '' %}
+
+package:
+  name: bioconductor-scde
+  version: {{ version|replace("-", "_") }}
+
+source:
+  git_url: https://github.com/hms-dbmi/scde
+  # Install the 1.99.1 tag b/c the 1.99.2 tag still lists the version as 1.99.1,
+  # which is confusing. Also, unclear how this GitHub version corresponds to the
+  # Bioconductor releases, which have entirely different version numbers.
+  # https://github.com/hms-dbmi/scde/issues/57
+  git_tag: 1.99.1
+
+build:
+  number: 0
+  skip: true  # [win]
+  rpaths:
+    - lib/R/lib/
+    - lib/
+
+requirements:
+  build:
+    - r-base
+    - bioconductor-biocparallel
+    - r-cairo
+    - r-mass
+    - r-rcolorbrewer
+    - r-rmtstat
+    - r-rcpp >=0.10.4
+    - r-rcpparmadillo >=0.5.400.2.0
+    - r-rook
+    - bioconductor-edger
+    - r-extremes
+    - r-flexmix <=2.3_13
+    - r-mgcv
+    - r-nnet
+    - bioconductor-pcamethods
+    - r-quantreg
+    - r-rjson
+    - posix                # [win]
+    - {{native}}toolchain  # [win]
+    - gcc                  # [not win]
+
+  run:
+    - r-base
+    - bioconductor-biocparallel
+    - r-cairo
+    - r-mass
+    - r-rcolorbrewer
+    - r-rmtstat
+    - r-rcpp >=0.10.4
+    - r-rcpparmadillo >=0.5.400.2.0
+    - r-rook
+    - bioconductor-edger
+    - r-extremes
+    - r-flexmix <=2.3_13
+    - r-mgcv
+    - r-nnet
+    - bioconductor-pcamethods
+    - r-quantreg
+    - r-rjson
+    - libgcc  # [not win]
+
+test:
+  commands:
+    - $R -e "library('scde')"  # [not win]
+    - "\"%R%\" -e \"library('scde')\""  # [win]
+
+about:
+  home: http://pklab.med.harvard.edu/scde
+  license: custom
+  license_file: '{{ environ["RECIPE_DIR"] }}/license.txt'
+  summary: 'The scde package implements a set of statistical methods for analyzing single-cell
+    RNA-seq data. scde fits individual error models for single-cell RNA-seq measurements.
+    These models can then be used for assessment of differential expression between
+    groups of cells, as well as other types of analysis. The scde package also contains
+    the pagoda framework which applies pathway and gene set overdispersion analysis
+    to identify and characterize putative cell subpopulations based on transcriptional
+    signatures. The overall approach to the differential expression analysis is detailed
+    in the following publication: "Bayesian approach to single-cell differential expression
+    analysis" (Kharchenko PV, Silberstein L, Scadden DT, Nature Methods, doi:
+    10.1038/nmeth.2967). The overall approach to subpopulation identification and
+    characterization is detailed in the following pre-print: "Characterizing 
+    transcriptional heterogeneity through pathway and gene set overdispersion 
+    analysis" (Fan J, Salathia N, Liu R, Kaeser G, Yung Y, Herman J, Kaper F,
+    Fan JB, Zhang K, Chun J, and Kharchenko PV, Nature Methods, doi:10.1038/nmeth.3734).'
