@@ -14,3 +14,5 @@
 
 * `create-recipe-bioc.md` - Directions to create a recipe for a
   Bioconductor R package.
+
+* `tips-and-tricks.md` - Tips and tricks for some less documented features.
