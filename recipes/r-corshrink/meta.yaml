@@ -1,0 +1,56 @@
+{% set version = '0.1-2' %}
+{% set posix = 'm2-' if win else '' %}
+{% set native = 'm2w64-' if win else '' %}
+
+package:
+  name: r-corshrink
+  version: {{ version|replace("-", "_") }}
+
+source:
+  git_url: https://github.com/kkdey/CorShrink
+  git_tag: v0.1-2
+
+build:
+  number: 0
+  skip: true  # [win32]
+  rpaths:
+    - lib/R/lib/
+    - lib/
+
+requirements:
+  build:
+    - r-base
+    - r-matrix
+    - r-squarem
+    - r-ashr
+    - r-corpcor
+    - r-ggcorrplot
+    - r-ggplot2
+    - r-gridextra
+    - r-reshape2
+
+  run:
+    - r-base
+    - r-matrix
+    - r-squarem
+    - r-ashr
+    - r-corpcor
+    - r-ggcorrplot
+    - r-ggplot2
+    - r-gridextra
+    - r-reshape2
+
+test:
+  commands:
+    - $R -e "library('CorShrink')"  # [not win]
+    - "\"%R%\" -e \"library('CorShrink')\""  # [win]
+
+about:
+  home: https://github.com/kkdey/CorShrink
+  license: GPL (>= 2)
+  summary: Performs adaptive shrinkage of correlation and covariance matrices using a mixture
+    model prior over the Fisher z-transformation of the correlations. A separate shrinkage
+    intensity may be specifiedfor each cell of the correlation or the covariance table.
+  license_family: GPL3
+  license_file: '{{ environ["PREFIX"] }}/lib/R/share/licenses/GPL-3'  # [unix]
+  license_file: '{{ environ["PREFIX"] }}\R\share\licenses\GPL-3'  # [win]
