@@ -19,3 +19,6 @@ Requests or Issues.
 
 * `bioconda-migration.R` - Helper script for migrating non-bio R
   packages from bioconda to conda-forge.
+
+* `find-bot-pull-requests.R` - Find Pull Requests on R feedstocks opened by
+  regro-cf-autotick-bot.

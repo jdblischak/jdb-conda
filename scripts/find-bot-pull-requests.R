@@ -22,14 +22,24 @@ search_query <- paste("is:pr",
                       "is:open",
                       "is:public",
                       "author:regro-cf-autotick-bot",
-                      "status:failure", # sometimes setting this returns more results
+                      "status:failure",
                       "")
 message("Using the search query:")
 message(search_query)
 pr_bot_search <- gh("/search/issues", page = 1, per_page = 100,
                     q = search_query, sort = "created")
-message(sprintf("Found %d bot PRs", pr_bot_search$total_count))
+n_found <- pr_bot_search$total_count
+message(sprintf("Found %d bot PRs", n_found))
 pr_bot <- pr_bot_search$items
+n_returned <- length(pr_bot)
+page <- 1
+while (n_returned < n_found) {
+  page <- page + 1
+  pr_bot_search <- gh("/search/issues", page = page, per_page = 100,
+                      q = search_query, sort = "created")
+  pr_bot <- c(pr_bot, pr_bot_search$items)
+  n_returned <- length(pr_bot)
+}
 pr_bot_repos <- map_chr(pr_bot, "repository_url") %>% basename
 pr_bot_r <- pr_bot[str_detect(pr_bot_repos, "^r-")]
 message(sprintf("Found %d bot PRs on R feedstocks", length(pr_bot_r)))
