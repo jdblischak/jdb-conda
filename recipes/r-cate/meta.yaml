@@ -1,0 +1,66 @@
+{% set version = '1.0.4' %}
+{% set posix = 'm2-' if win else '' %}
+{% set native = 'm2w64-' if win else '' %}
+
+package:
+  name: r-cate
+  version: {{ version|replace("-", "_") }}
+
+source:
+  url:
+    - {{ cran_mirror }}/src/contrib/cate_{{ version }}.tar.gz
+    - {{ cran_mirror }}/src/contrib/Archive/cate/cate_{{ version }}.tar.gz
+  sha256: 33dfc244803c315857bf1fe8d17f3c934b8e86352b5440085fbdd45e8e319361
+
+build:
+  merge_build_host: True  # [win]
+  number: 0
+  noarch: generic
+
+  rpaths:
+    - lib/R/lib/
+    - lib/
+
+requirements:
+  build:
+    - {{posix}}zip               # [win]
+
+  host:
+    - r-base
+    - r-mass
+    - r-corpcor
+    - r-esabcv
+    - r-leapp
+    - r-ruv
+    - bioconductor-sva
+
+  run:
+    - r-base
+    - r-mass
+    - r-corpcor
+    - r-esabcv
+    - r-leapp
+    - r-ruv
+    - bioconductor-sva
+
+test:
+  commands:
+    - $R -e "library('cate')"           # [not win]
+    - "\"%R%\" -e \"library('cate')\""  # [win]
+
+about:
+  home: https://CRAN.R-project.org/package=cate
+  license: GPL-2
+  summary: Provides several methods for factor analysis in high dimension (both n,p >> 1) and
+    methods to adjust for possible confounders in multiple hypothesis testing.
+  license_family: GPL2
+  license_file: '{{ environ["PREFIX"] }}/lib/R/share/licenses/GPL-2'
+
+extra:
+  recipe-maintainers:
+    - johanneskoester
+    - bgruening
+    - daler
+    - jdblischak
+    - cbrueffer
+    - dbast
