@@ -1,0 +1,117 @@
+{% set version = '0.1-9' %}
+
+{% set posix = 'm2-' if win else '' %}
+{% set native = 'm2w64-' if win else '' %}
+
+package:
+  name: r-vicar
+  version: {{ version|replace("-", "_") }}
+
+source:
+
+  git_url: https://github.com/dcgerard/vicar
+  git_tag: v0.1-9
+
+build:
+  merge_build_host: True  # [win]
+  # If this is a new build for the same version, increment the build number.
+  number: 0
+
+  # This is required to make R link correctly on Linux.
+  rpaths:
+    - lib/R/lib/
+    - lib/
+
+# Suggests: testthat, impute, softImpute, rstiefel, missForest, leapp, covr, qvalue, knitr, rmarkdown, ggplot2, dplyr, pROC
+requirements:
+  build:
+    - {{ compiler('c') }}        # [not win]
+    - {{ compiler('cxx') }}      # [not win]
+    - {{native}}toolchain        # [win]
+    - {{posix}}filesystem        # [win]
+    - {{posix}}git
+    - {{posix}}zip               # [win]
+
+  host:
+    - r-base
+    - r-mass
+    - r-rcpp
+    - r-rcpparmadillo
+    - r-rcppprogress
+    - r-squarem
+    - r-ashr
+    - r-assertthat
+    - r-bfa
+    - r-cate
+    - r-coda
+    - r-irlba
+    - bioconductor-limma
+    - r-ruv
+    - bioconductor-sva
+
+  run:
+    - r-base
+    - {{native}}gcc-libs         # [win]
+    - r-mass
+    - r-rcpp
+    - r-rcpparmadillo
+    - r-rcppprogress
+    - r-squarem
+    - r-ashr
+    - r-assertthat
+    - r-bfa
+    - r-cate
+    - r-coda
+    - r-irlba
+    - bioconductor-limma
+    - r-ruv
+    - bioconductor-sva
+
+test:
+  commands:
+    # You can put additional test commands to be run here.
+    - $R -e "library('vicar')"           # [not win]
+    - "\"%R%\" -e \"library('vicar')\""  # [win]
+
+  # You can also put a file called run_test.py, run_test.sh, or run_test.bat
+  # in the recipe that will be run at test time.
+
+  # requires:
+    # Put any additional test requirements here.
+
+about:
+  home: https://github.com/dcgerard/vicar
+  license: GPL (>= 3)
+  summary: 'Implements many methods for accounting for unobserved confounding in linear regression.
+    If control genes are available, then the following methods are implementable: a
+    calibrated version of CATE/RUV4 (vruv4), a Bayesian version of RUV (ruvb), a version
+    of RUV that unifies other versions of RUV (ruv3), and a generalized version of RUV
+    (ruvimpute). If control genes are not available, then MOUTHWASH (mouthwash) and
+    BACKWASH (backwash) are excellent procedures to use as long as only one covariate
+    is of interest.'
+
+  license_family: GPL3
+
+# The original CRAN metadata for this package was:
+
+# Package: vicar
+# Type: Package
+# Title: Various Ideas for Confounder Adjustment in Regression
+# Version: 0.1-9
+# Date: 2018-01-27
+# Authors@R: c(person("David","Gerard",role=c("aut","cre"), email="dcgerard@uchicago.edu"), person("Peter","Carbonetto",role="aut"))
+# Description: Implements many methods for accounting for unobserved confounding in linear regression. If control genes are available, then the following methods are implementable: a calibrated version of CATE/RUV4 (vruv4), a Bayesian version of RUV (ruvb), a version of RUV that unifies other versions of RUV (ruv3), and a generalized version of RUV (ruvimpute). If control genes are not available, then MOUTHWASH (mouthwash) and BACKWASH (backwash) are excellent procedures to use as long as only one covariate is of interest.
+# URL: https://github.com/dcgerard/vicar
+# BugReports: http://github.com/dcgerard/vicar/issues
+# License: GPL (>= 3)
+# LazyData: TRUE
+# RoxygenNote: 6.0.1
+# LinkingTo: Rcpp, RcppArmadillo, RcppProgress
+# Depends: R (>= 2.10)
+# Imports: ruv, SQUAREM, limma, sva, assertthat, MASS, cate, irlba, coda, bfa, Rcpp, RcppProgress, ashr
+# Suggests: testthat, impute, softImpute, rstiefel, missForest, leapp, covr, qvalue, knitr, rmarkdown, ggplot2, dplyr, pROC
+# VignetteBuilder: knitr
+
+# See
+# http://docs.continuum.io/conda/build.html for
+# more information about meta.yaml
