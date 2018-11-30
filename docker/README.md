@@ -3,9 +3,11 @@
 This directory contains the source Dockerfiles I use to build containers for
 testing conda-related things.
 
+* `test-conda-build/` - For testing conda-build. Based on
+  continuumio/miniconda3:4.5.11.
 * `ubuntu-conda-forge/` - For testing conda-forge recipes. Based on Ubuntu
   16.04.
-
+* `ubuntu-bioconda` - For testing bioconda recipes. Based on ubuntu-conda-forge.
 
 I modeled my Dockerfiles off of the following Dockerfiles:
 
