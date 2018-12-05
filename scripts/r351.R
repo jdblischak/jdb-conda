@@ -25,7 +25,9 @@ pkgs <- anaconda %>%
   filter(channel == "conda-forge") %>%
   group_by(name) %>%
   summarize(r351 = any(str_detect(build, "^r351")))
+Sys.Date()
+# [1] "2018-12-05"
 table(pkgs$r351)
 #
 # FALSE  TRUE
-#   880   359
+#   198  1139
