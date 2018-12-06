@@ -1,4 +1,4 @@
-FROM continuumio/miniconda3:4.5.11
+FROM continuumio/miniconda3:latest
 # https://hub.docker.com/r/continuumio/miniconda3/
 # https://github.com/ContinuumIO/docker-images/blob/miniconda3-4.3.27p0/miniconda3/Dockerfile
 
@@ -18,15 +18,16 @@ RUN apt-get update && \
     git \
     nano
 
-RUN conda config --add channels defaults && \
-    conda config --add channels conda-forge
-
 RUN conda config \
   --set always_yes yes \
-  --set changeps1 no \
-  --set auto_update_conda False
+  --set changeps1 no
 
 RUN conda install conda-build conda-verify patchelf py-lief
+
+# For running tests
+RUN conda install anaconda-client mock pytest pytest-cov
+
+RUN git clone https://github.com/conda/conda_build_test_recipe.git
 
 RUN git clone https://github.com/jdblischak/conda-build.git
 
