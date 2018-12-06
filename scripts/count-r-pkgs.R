@@ -9,6 +9,8 @@ suppressPackageStartupMessages(library("jsonlite"))
 suppressPackageStartupMessages(library("purrr"))
 suppressPackageStartupMessages(library("stringr"))
 
+# The order of the platforms and channels matters. Rearranging will break the
+# code.
 platforms <- c("linux-64", "osx-64", "win-64")
 channels <- c("r", "conda-forge", "bioconda")
 totals <- matrix(nrow = length(channels), ncol = length(platforms))
@@ -22,8 +24,19 @@ for (platform in platforms) {
                                "-c conda-forge", "-c bioconda", "-c r",
                                "--platform", platform, "'^r-*'"),
                       stdout = TRUE)
-
   anaconda <- fromJSON(anaconda)
+
+  # Add bioconductor packages
+  if (platform != "win-64") {
+    bioc <- system2(command = "conda",
+                    args = c("search", "--json", "--override-channels",
+                             "-c conda-forge", "-c bioconda", "-c r",
+                             "--platform", platform, "'^bioconductor-*'"),
+                    stdout = TRUE)
+    bioc <- fromJSON(bioc)
+    anaconda <- c(anaconda, bioc)
+  }
+
   pkgs <- anaconda %>%
     map_df(`[`, c("name", "version", "build", "channel", "platform", "subdir")) %>%
     mutate(channel = basename(dirname(channel)),
@@ -37,9 +50,9 @@ for (platform in platforms) {
   totals[seq_along(pkgs$total), platform] <- pkgs$total
 }
 Sys.Date()
-# [1] "2018-12-05"
+# [1] "2018-12-06"
 totals
 #             linux-64 osx-64 win-64
 # r                382    381    375
 # conda-forge     1139   1141   1102
-# bioconda         112    103     NA
+# bioconda        1180   1000     NA
