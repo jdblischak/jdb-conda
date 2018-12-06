@@ -22,3 +22,9 @@ Requests or Issues.
 
 * `find-bot-pull-requests.R` - Find Pull Requests on R feedstocks opened by
   regro-cf-autotick-bot.
+
+* `count-r-pkgs.R` - Count the number of R packages available for the platforms
+  linux-64, osx-64, and win-64 for the channels r, conda-forge, and bioconda
+  (includes Bioconductor packages).
+
+* `r351.R` - Count the number of conda-forge R packages built for R 3.5.1.
