@@ -1,0 +1,43 @@
+{% set version = '0.3.1.2' %}
+
+package:
+  name: r-dscrutils
+  version: {{version}}
+
+source:
+  git_url: https://github.com/stephenslab/dsc
+  git_tag: v0.3.1.2
+
+build:
+  noarch: generic
+  number: 0
+  rpaths:
+    - lib/R/lib/
+    - lib/
+
+requirements:
+  host:
+    - r-base
+    - r-reticulate
+    - r-yaml
+
+  run:
+    - dsc {{version}}
+    - r-base
+    # Install reticulate via conda to avoid DSC installing it from CRAN
+    # https://github.com/stephenslab/dsc/blob/fb5710445306f287bb4ddbcc9625818d71ab94d2/dscrutils/R/utils.R#L29
+    - r-reticulate
+    - r-yaml
+
+test:
+  commands:
+    - $R -e "library('dscrutils')"
+
+about:
+  home: https://github.com/stephenslab/dsc
+  license: MIT
+  summary: Various R functions for interacting with and analyzing the
+    results of a Dynamic Statistical Comparison (DSC) experiment.
+  license_family: MIT
+  doc_url: https://stephenslab.github.io/dsc-wiki/
+  dev_url: https://github.com/stephenslab/dsc/dscrutils
