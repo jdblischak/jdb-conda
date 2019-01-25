@@ -1,5 +1,5 @@
 {% set name = "sos-notebook" %}
-{% set version = "0.18.2" %}
+{% set version = "0.18.3" %}
 
 package:
   name: "{{ name|lower }}"
@@ -7,7 +7,7 @@ package:
 
 source:
   url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
-  sha256: e2c6c5224317f2dc05dce497f32517663b031c4e193bb49489c628b0c28e86f0
+  sha256: c3c86b3a60329c1684633dcc29cb9332bcd0141ec4722d989e2466c0903d128f
 
 build:
   noarch: python
@@ -22,7 +22,6 @@ requirements:
     - ipykernel
     - ipython
     - markdown
-    - matplotlib
     - nbconvert >=5.1.1
     - nbformat
     - notebook >=5.0.0
@@ -31,7 +30,6 @@ requirements:
     - setuptools
     - sos >=0.18.2
     - tabulate
-    - wand
 
 test:
   imports:
