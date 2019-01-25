@@ -1,0 +1,43 @@
+{% set name = "wand" %}
+{% set version = "0.5.0" %}
+
+package:
+  name: "{{ name|lower }}"
+  version: "{{ version }}"
+
+source:
+  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
+  sha256: 52763dbf65d00cf98d7bc910b49329eea15896249c5555d47e169f2b6efbe166
+
+build:
+  number: 0
+  script: "{{ PYTHON }} -m pip install . --no-deps --ignore-installed -vv "
+
+requirements:
+  host:
+    - pip
+    - python
+  run:
+    - python
+
+test:
+  imports:
+    - wand
+    - wand.cdefs
+  requires:
+    - psutil >=1.0.1
+    - pytest >=2.3.0
+    - pytest-xdist >=1.8
+
+about:
+  home: http://wand-py.org/
+  license: MIT
+  license_family: MIT
+  license_file: 
+  summary: Ctypes-based simple MagickWand API binding for Python
+  doc_url: 
+  dev_url: 
+
+extra:
+  recipe-maintainers:
+    - your-github-id-here
