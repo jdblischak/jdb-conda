@@ -26,10 +26,11 @@ test:
   imports:
     - wand
     - wand.cdefs
-  requires:
-    - psutil >=1.0.1
-    - pytest >=2.3.0
-    - pytest-xdist >=1.8
+  files:
+    - test.py
+    - test.jpg
+  commands:
+    - python test.py
 
 about:
   home: http://wand-py.org/
