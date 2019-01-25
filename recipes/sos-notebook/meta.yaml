@@ -10,25 +10,14 @@ source:
   sha256: e2c6c5224317f2dc05dce497f32517663b031c4e193bb49489c628b0c28e86f0
 
 build:
+  noarch: python
   number: 0
   script: "{{ PYTHON }} -m pip install . --no-deps --ignore-installed -vv "
 
 requirements:
   host:
-    - ipykernel
-    - ipython
-    - markdown
-    - matplotlib
-    - nbconvert >=5.1.1
-    - nbformat
-    - notebook >=5.0.0
-    - pandas
     - pip
-    - python
-    - setuptools
-    - sos >=0.18.2
-    - tabulate
-    - wand
+    - python >=3.6
   run:
     - ipykernel
     - ipython
@@ -38,7 +27,7 @@ requirements:
     - nbformat
     - notebook >=5.0.0
     - pandas
-    - python
+    - python >=3.6
     - setuptools
     - sos >=0.18.2
     - tabulate
@@ -52,11 +41,14 @@ about:
   home: https://github.com/vatlab/SOS
   license: BSD
   license_family: BSD
-  license_file: 
-  summary: Script of Scripts (SoS): an interactive, cross-platform, and cross-language workflow system for reproducible data analysis
-  doc_url: 
-  dev_url: 
+  license_file: LICENSE
+  summary: "Script of Scripts (SoS): an interactive, cross-platform, and
+            cross-language workflow system for reproducible data analysis"
+  doc_url: https://vatlab.github.io/sos-docs/
+  dev_url: https://github.com/vatlab/sos-notebook
 
 extra:
   recipe-maintainers:
-    - your-github-id-here
+    - BoPeng
+    - gaow
+    - jdblischak
