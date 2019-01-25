@@ -10,6 +10,7 @@ source:
   sha256: 52763dbf65d00cf98d7bc910b49329eea15896249c5555d47e169f2b6efbe166
 
 build:
+  noarch: python
   number: 0
   script: "{{ PYTHON }} -m pip install . --no-deps --ignore-installed -vv "
 
@@ -19,6 +20,7 @@ requirements:
     - python
   run:
     - python
+    - imagemagick
 
 test:
   imports:
@@ -33,11 +35,13 @@ about:
   home: http://wand-py.org/
   license: MIT
   license_family: MIT
-  license_file: 
-  summary: Ctypes-based simple MagickWand API binding for Python
-  doc_url: 
-  dev_url: 
+  license_file: LICENSE
+  summary: "Ctypes-based simple MagickWand API binding for Python"
+  doc_url: http://docs.wand-py.org/
+  dev_url: https://github.com/emcconville/wand
 
 extra:
   recipe-maintainers:
-    - your-github-id-here
+    - BoPeng
+    - gaow
+    - jdblischak
