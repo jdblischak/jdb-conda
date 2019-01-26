@@ -12,7 +12,6 @@ source:
 build:
   noarch: python
   number: 0
-  script: "{{ PYTHON }} -m pip install . --no-deps --ignore-installed -vv "
 
 requirements:
   host:
@@ -34,6 +33,9 @@ requirements:
 test:
   imports:
     - sos_notebook
+  commands:
+    - jupyter kernelspec list | grep -w sos  # [unix]
+    - jupyter kernelspec list | findstr sos  # [win]
 
 about:
   home: https://github.com/vatlab/SOS
