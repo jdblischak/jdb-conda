@@ -10,19 +10,14 @@ source:
   sha256: 04f1c40fa04a852a4ee79a44dcf3f82f123f13f02835a6fabf9c51b8d10928dc
 
 build:
+  noarch: python
   number: 0
   script: "{{ PYTHON }} -m pip install . --no-deps --ignore-installed -vv "
 
 requirements:
   host:
-    - feather-format
-    - numpy
-    - pandas
     - pip
     - python
-    - setuptools
-    - sos >=0.9.12.0
-    - sos-notebook >=0.9.10.8
   run:
     - feather-format
     - numpy
@@ -31,6 +26,9 @@ requirements:
     - setuptools
     - sos >=0.9.12.0
     - sos-notebook >=0.9.10.8
+    - r-base
+    - r-feather
+    - r-irkernel
 
 test:
   imports:
@@ -40,11 +38,13 @@ about:
   home: https://github.com/vatlab/SOS
   license: BSD
   license_family: BSD
-  license_file: 
+  license_file: LICENSE
   summary: SoS Notebook extension for language R
-  doc_url: 
-  dev_url: 
+  doc_url: https://vatlab.github.io/sos-docs/
+  dev_url: https://github.com/vatlab/sos-r
 
 extra:
   recipe-maintainers:
-    - your-github-id-here
+    - BoPeng
+    - gaow
+    - jdblischak
