@@ -1,0 +1,50 @@
+{% set name = "sos-r" %}
+{% set version = "0.18.0" %}
+
+package:
+  name: "{{ name|lower }}"
+  version: "{{ version }}"
+
+source:
+  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
+  sha256: 04f1c40fa04a852a4ee79a44dcf3f82f123f13f02835a6fabf9c51b8d10928dc
+
+build:
+  number: 0
+  script: "{{ PYTHON }} -m pip install . --no-deps --ignore-installed -vv "
+
+requirements:
+  host:
+    - feather-format
+    - numpy
+    - pandas
+    - pip
+    - python
+    - setuptools
+    - sos >=0.9.12.0
+    - sos-notebook >=0.9.10.8
+  run:
+    - feather-format
+    - numpy
+    - pandas
+    - python
+    - setuptools
+    - sos >=0.9.12.0
+    - sos-notebook >=0.9.10.8
+
+test:
+  imports:
+    - sos_r
+
+about:
+  home: https://github.com/vatlab/SOS
+  license: BSD
+  license_family: BSD
+  license_file: 
+  summary: SoS Notebook extension for language R
+  doc_url: 
+  dev_url: 
+
+extra:
+  recipe-maintainers:
+    - your-github-id-here
