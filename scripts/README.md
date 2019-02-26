@@ -28,3 +28,5 @@ Requests or Issues.
   (includes Bioconductor packages).
 
 * `r351.R` - Count the number of conda-forge R packages built for R 3.5.1.
+
+* `pkgs-to-add.R` - Find R packages to add to conda-forge channel
