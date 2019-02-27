@@ -1,4 +1,3 @@
-r-askpass
 r-amore
 r-bms
 r-conting
