@@ -1,5 +1,4 @@
-{% set version = '0.1.0' %}
-
+{% set version = '0.2.0' %}
 {% set posix = 'm2-' if win else '' %}
 {% set native = 'm2w64-' if win else '' %}
 
@@ -10,19 +9,16 @@ package:
 source:
 
   git_url: https://github.com/dcgerard/seqgendiff
-  git_tag: v0.1.0
+  git_tag: v0.2.0
 
 build:
   merge_build_host: True  # [win]
-  # If this is a new build for the same version, increment the build number.
   number: 0
 
-  # This is required to make R link correctly on Linux.
   rpaths:
     - lib/R/lib/
     - lib/
 
-# Suggests: covr, testthat
 requirements:
   build:
     - {{posix}}filesystem        # [win]
@@ -32,46 +28,36 @@ requirements:
   host:
     - r-base
     - r-assertthat
+    - r-irlba
 
   run:
     - r-base
     - r-assertthat
+    - r-irlba
 
 test:
   commands:
-    # You can put additional test commands to be run here.
     - $R -e "library('seqgendiff')"           # [not win]
     - "\"%R%\" -e \"library('seqgendiff')\""  # [win]
 
-  # You can also put a file called run_test.py, run_test.sh, or run_test.bat
-  # in the recipe that will be run at test time.
-
-  # requires:
-    # Put any additional test requirements here.
-
 about:
   home: https://github.com/dcgerard/seqgendiff
-  license: GPL (>=3)
+  license: GPL-3
   summary: Modifies/generates RNA-seq data for use in simulations.
   license_family: GPL3
-
-# The original CRAN metadata for this package was:
+  license_file: '{{ environ["PREFIX"] }}/lib/R/share/licenses/GPL-3'
 
 # Package: seqgendiff
 # Type: Package
 # Title: Sequence Generation for Differential Expression Analysis
-# Version: 0.1.0
-# Authors@R: person("David", "Gerard", email = "dcgerard@uchicago.edu", role = c("aut", "cre"))
+# Version: 0.2.0
+# Authors@R: person("David", "Gerard", email = "dgerard@american.edu", role = c("aut", "cre"))
 # Description: Modifies/generates RNA-seq data for use in simulations.
-# License: GPL (>=3)
+# License: GPL-3
 # Encoding: UTF-8
 # LazyData: true
 # URL: https://github.com/dcgerard/seqgendiff
 # BugReports: http://github.com/dcgerard/seqgendiff/issues
-# RoxygenNote: 6.0.1
+# RoxygenNote: 6.1.1
 # Suggests: covr, testthat
-# Imports: assertthat
-
-# See
-# http://docs.continuum.io/conda/build.html for
-# more information about meta.yaml
+# Imports: assertthat, irlba
