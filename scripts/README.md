@@ -30,3 +30,8 @@ Requests or Issues.
 * `r351.R` - Count the number of conda-forge R packages built for R 3.5.1.
 
 * `pkgs-to-add.R` - Find R packages to add to conda-forge channel
+
+* `stop-watching.py` - Stop watching conda-forge R feedstocks. I will still
+  receive notifications if mentioned by my username, @conda-forge/r, or
+  @conda-forge/r-<pkg>. Also I should still receive a notification if someone
+  starts a conversation in a particular team forum.
