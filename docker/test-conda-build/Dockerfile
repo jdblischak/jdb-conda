@@ -22,7 +22,11 @@ RUN conda config \
   --set always_yes yes \
   --set changeps1 no
 
-RUN conda install conda-build conda-verify patchelf py-lief
+RUN conda install conda-build \
+                  conda-package-handling \
+                  conda-verify \
+                  patchelf \
+                  py-lief
 
 # For running tests
 RUN conda install anaconda-client mock pytest pytest-cov
@@ -35,10 +39,16 @@ WORKDIR conda-build
 
 RUN git remote add upstream https://github.com/conda/conda-build.git
 
-RUN conda build conda.recipe/
+RUN git pull upstream master
 
-RUN conda install --use-local conda-build
+RUN pip install .
 
-ENV PYTHONPATH .
+# Alternatively install using conda recipe, but I've had
+# that fail in the past since it is not updated as often.
+#RUN conda build conda.recipe/
+
+#RUN conda install --use-local conda-build
+
+#ENV PYTHONPATH .
 
 CMD [ "/bin/bash" ]
