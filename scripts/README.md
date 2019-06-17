@@ -35,3 +35,6 @@ Requests or Issues.
   receive notifications if mentioned by my username, @conda-forge/r, or
   @conda-forge/r-<pkg>. Also I should still receive a notification if someone
   starts a conversation in a particular team forum.
+
+* `staged-recipes.R` - Helper script for finding and reviewing staged-recipes
+  Pull Requests with R recipes.
