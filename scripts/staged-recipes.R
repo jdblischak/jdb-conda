@@ -12,7 +12,6 @@ suppressPackageStartupMessages(library("stringr"))
 
 is_r_recipe <- function(x) {
   regex <- "\\br-[:alnum:]\\b" # match any word starting with r-
-  regex <- "\\bdo not merge\\b"
   any(str_detect(c(x$title, x$body), regex))
 }
 
