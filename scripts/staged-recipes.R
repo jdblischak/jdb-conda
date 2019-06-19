@@ -1,6 +1,8 @@
 #!/usr/bin/env Rscript
 
 # Find staged-recipes Pull Requests with R recipes.
+#
+# List Pull Requests: https://developer.github.com/v3/pulls/#list-pull-requests
 
 # Packages ---------------------------------------------------------------------
 
@@ -27,7 +29,29 @@ pr_all <- gh("/repos/:owner/:repo/pulls",
 
 pr_r <- Filter(is_r_recipe, pr_all)
 
-cat(glue("Found {length(pr_r)} Pull Requests for R recipes"))
+# Find PRs that mention @conda-forge/help-r
+#
+# https://help.github.com/en/articles/searching-issues-and-pull-requests
+query <- paste(
+  "\"conda-forge/help-r\"", # search for help-r since `mentions:conda-forge/help-r` didn't work
+  "repo:conda-forge/staged-recipes",
+  "is:pr",
+  "is:open",
+  "updated:>2019-01-01",
+  sep = "+")
+# Sanitize URL
+query <- str_replace_all(query, ":", "%3A")
+query <- str_replace_all(query, "/", "%2F")
+
+pr_search <- gh(glue("/search/issues?q={query}"))
+
+pr_search_as_pr <- lapply(pr_search$items,
+                          function(x) gh(x[["pull_request"]][["url"]]))
+
+pr_r <- c(pr_r, pr_search_as_pr)
+
+cat(glue("Found {length(pr_r)} Pull Requests for R-related recipes"),
+    sep = "\n")
 
 for (i in seq_along(pr_r)) {
   pr <- pr_r[[i]]
