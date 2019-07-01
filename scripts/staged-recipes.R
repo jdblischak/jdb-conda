@@ -29,16 +29,19 @@ pr_all <- gh("/repos/:owner/:repo/pulls",
 
 pr_r <- Filter(is_r_recipe, pr_all)
 
-# Find PRs that mention @conda-forge/help-r
+# Find PRs that mention @conda-forge/help-r or @conda-forge/r
 #
 # https://help.github.com/en/articles/searching-issues-and-pull-requests
+# https://help.github.com/en/articles/searching-issues-and-pull-requests#search-by-team-mention
 query <- paste(
-  "\"conda-forge/help-r\"", # search for help-r since `mentions:conda-forge/help-r` didn't work
+  "team:conda-forge/help-r",
+  "team:conda-forge/r",
   "repo:conda-forge/staged-recipes",
   "is:pr",
   "is:open",
   "updated:>2019-01-01",
   sep = "+")
+
 # Sanitize URL
 query <- str_replace_all(query, ":", "%3A")
 query <- str_replace_all(query, "/", "%2F")
