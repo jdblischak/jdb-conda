@@ -13,8 +13,14 @@ suppressPackageStartupMessages(library("stringr"))
 # Functions --------------------------------------------------------------------
 
 is_r_recipe <- function(x) {
-  regex <- "\\br-[:alnum:]\\b" # match any word starting with r-
-  any(str_detect(c(x$title, x$body), regex))
+  regex <- c(
+    "\\br-[:alnum:]\\b", # match any word starting with r-
+    "\\bR\\b", # match a single capital R
+    "\\bCRAN\\b", # match CRAN
+    "https://cran\\.r-project\\.org" # match CRAN URL
+  )
+  text <- paste(x$title, x$body, collapse = "")
+  any(str_detect(text, regex))
 }
 
 # Main -------------------------------------------------------------------------
