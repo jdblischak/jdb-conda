@@ -19,7 +19,7 @@ is_r_recipe <- function(x) {
     "\\bCRAN\\b", # match CRAN
     "https://cran\\.r-project\\.org" # match CRAN URL
   )
-  text <- paste(x$title, x$body, collapse = "")
+  text <- paste(x$title, x$body)
   any(str_detect(text, regex))
 }
 
