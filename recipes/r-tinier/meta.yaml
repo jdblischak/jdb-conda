@@ -1,0 +1,78 @@
+{% set version = '0.3.0' %}
+{% set posix = 'm2-' if win else '' %}
+{% set native = 'm2w64-' if win else '' %}
+
+package:
+  name: r-tinier
+  version: {{ version|replace("-", "_") }}
+
+source:
+  git_url: https://github.com/jmablog/tinieR
+  git_tag: v0.3.0
+
+build:
+  merge_build_host: True  # [win]
+  number: 0
+  noarch: generic
+
+  rpaths:
+    - lib/R/lib/
+    - lib/
+
+requirements:
+  build:
+    - {{ posix }}filesystem        # [win]
+    - {{ posix }}git
+    - {{ posix }}zip               # [win]
+
+  host:
+    - r-base
+    - r-fs >=1.4.2
+    - r-glue >=1.4.1
+    - r-httr >=1.4.1
+    - r-jpeg
+    - r-jsonlite >=1.7.0
+    - r-png
+
+  run:
+    - r-base
+    - r-fs >=1.4.2
+    - r-glue >=1.4.1
+    - r-httr >=1.4.1
+    - r-jpeg
+    - r-jsonlite >=1.7.0
+    - r-png
+
+test:
+  commands:
+    - $R -e "library('tinieR')"           # [not win]
+    - "\"%R%\" -e \"library('tinieR')\""  # [win]
+
+about:
+  home: https://github.com/jmablog/tinieR
+  license: MIT
+  summary: Shrink image filesizes with the TinyPNG API <https://tinypng.com>. Works with .png
+    and .jpg/.jpeg files, and can return the new image filepath to enable embedding
+    in other image workflows/functions.
+
+  license_family: MIT
+  license_file:
+    - '{{ environ["PREFIX"] }}/lib/R/share/licenses/MIT'
+    - LICENSE
+
+# The original CRAN metadata for this package was:
+
+# Package: tinieR
+# Title: Shrink Image Filesizes with TinyPNG.com
+# Version: 0.3.0
+# Authors@R: person(given = "James", family = "Adams", role = c("aut", "cre"), email = "james@jmablog.com")
+# Description: Shrink image filesizes with the TinyPNG API <https://tinypng.com>. Works with .png and .jpg/.jpeg files, and can return the new image filepath to enable embedding in other image workflows/functions.
+# License: MIT + file LICENSE
+# URL: https://github.com/jmablog/tinieR
+# BugReports: https://github.com/jmablog/tinieR/issues
+# Encoding: UTF-8
+# LazyData: true
+# Roxygen: list(markdown = TRUE)
+# RoxygenNote: 7.1.1
+# Imports: fs (>= 1.4.2), glue (>= 1.4.1), httr (>= 1.4.1), jsonlite (>= 1.7.0), png, jpeg
+# Suggests: testthat
