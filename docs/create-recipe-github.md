@@ -26,10 +26,14 @@ directory.
     contains compiled code, the conda binary it creates will only be installable
     on the same operating system on which it was built.
 
+    If you need to create a recipe for a tag other than the most recent tag,
+    specify the tag with `--git-tag <name-of-tag>`.
+
 1. Clean up the recipe:
-    a. Remove unnecessary comments
-    b. Make sure the URL to the GitHub repo is correct in the about section.
-    c. Check that the license file(s) is/are included.
+
+    1) Remove unnecessary comments
+    1) Make sure the URL to the GitHub repo is correct in the about section.
+    1) Check that the license file(s) is/are included.
 
 1. Build the packages with `conda build`:
 
