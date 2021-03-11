@@ -1,0 +1,82 @@
+{% set version = '0.8.0' %}
+{% set posix = 'm2-' if win else '' %}
+{% set native = 'm2w64-' if win else '' %}
+
+package:
+  name: r-susier
+  version: {{ version|replace("-", "_") }}
+
+source:
+  git_url: https://github.com/stephenslab/susieR
+  git_tag: 0.8.0
+
+build:
+  merge_build_host: True  # [win]
+  number: 0
+  noarch: generic
+  rpaths:
+    - lib/R/lib/
+    - lib/
+
+# Suggests: reshape, ggplot2, cowplot, testthat, microbenchmark, knitr, rmarkdown, L0Learn
+requirements:
+  build:
+    - {{ posix }}filesystem        # [win]
+    - {{ posix }}git
+    - {{ posix }}zip               # [win]
+
+  host:
+    - r-base
+    - r-matrix
+    - r-expm
+    - r-matrixstats
+
+  run:
+    - r-base
+    - r-matrix
+    - r-expm
+    - r-matrixstats
+
+test:
+  commands:
+    - $R -e "library('susieR')"           # [not win]
+    - "\"%R%\" -e \"library('susieR')\""  # [win]
+
+about:
+  home: https://github.com/stephenslab/susieR
+  license: MIT
+  summary: The package implements a simple new way to perform variable selection in multiple
+    regression ($y=Xb+e$), using computationally efficient variational Bayes approach.
+    The methods implemented here are particularly well-suited to settings where some
+    of the X variables are highly correlated, and the true effects are highly sparse
+    (e.g. <20 non-zero effects in the vector $b$), although it is also useful to more
+    general applications.
+  license_family: MIT
+  license_file:
+    - '{{ environ["PREFIX"] }}/lib/R/share/licenses/MIT'
+    - LICENSE
+
+# The original CRAN metadata for this package was:
+
+# Encoding: UTF-8
+# Type: Package
+# Package: susieR
+# Title: Fit Sum of Single Effects Linear Regression Model
+# Description: The package implements a simple new way to perform variable selection in multiple regression ($y=Xb+e$), using computationally efficient variational Bayes approach. The methods implemented here are particularly well-suited to settings where some of the X variables are highly correlated, and the true effects are highly sparse (e.g. <20 non-zero effects in the vector $b$), although it is also useful to more general applications.
+# Date: 2019-04-03
+# Version: 0.8.0
+# Authors@R: c(person("Gao","Wang",role=c("aut","cre"), email="gaow@uchicago.edu"), person("Peter","Carbonetto",role="aut"), person("Yuxin","Zou",role="aut"), person("Kaiqian","Zhang",role="aut"), person("Matthew","Stephens",role="aut"))
+# URL: https://github.com/stephenslab/susieR
+# BugReports: https://github.com/stephenslab/susieR/issues
+# License: MIT + file LICENSE
+# LazyData: true
+# NeedsCompilation: no
+# RoxygenNote: 6.1.1
+# Depends: R (>= 3.0.0)
+# Imports: methods, graphics, grDevices, stats, Matrix, matrixStats, expm
+# Suggests: reshape, ggplot2, cowplot, testthat, microbenchmark, knitr, rmarkdown, L0Learn
+# VignetteBuilder: knitr
+
+# See
+# https://docs.conda.io/projects/conda-build for
+# more information about meta.yaml
