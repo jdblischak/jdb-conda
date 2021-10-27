@@ -9,6 +9,9 @@
 * `create-recipe-github.md` - Directions to create a recipe for a GitHub R
   package.
 
+* `develop-conda-build.md` - Directions to setup a development environment to
+  hack on `conda-build`.
+
 * `submit-bioconda-bioc.md` - Directions to create and test a recipe for a
   Bioconductor R package for submission to bioconda.
 
