@@ -166,7 +166,7 @@ if (!interactive()) {
     opts$feedstock <- NULL
   }
   main(feedstock = opts$feedstock,
-       dry_run = opts$`dry-run`,
+       dry_run = opts$dry_run,
        all = opts$all,
        limit = as.numeric(opts$limit),
        force = opts$force)
