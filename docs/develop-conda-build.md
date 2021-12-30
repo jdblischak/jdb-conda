@@ -36,12 +36,17 @@
     conda build --version
     ```
 
-1. Run the tests (these are unbearably slow, so make sure to specify the file or
-   even better the exact test function)
+1. Run the tests. The entire test suite is unbearably slow. You can obtain
+   quicker feedback by specifying one of the test files for the CRAN skeleton,
+   or even better the exact test function
 
     ```
-    pytest tests/test_api_skeleton.py
-    pytest tests/test_api_skeleton.py::test_cran_no_comments
+    # Unit tests for individual functions defined in the CRAN skeleton
+    pytest tests/test_cran_skeleton.py
+    # Integrative tests that simulate calling `conda skeleton cran`
+    pytest tests/test_api_skeleton_cran.py
+    # Example of how to specify the exact test within a test file
+    pytest tests/test_api_skeleton_cran.py::test_cran_no_comments
     ```
 
 1. Install and run flake8
