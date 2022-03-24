@@ -11,7 +11,7 @@ I follow this general strategy for building the packages:
 
     ```
     conda build --R 4.0 r-<pkgname>
-    conda build --R 3.6 r-<pkgname>
+    conda build --R 4.1 r-<pkgname>
     ```
 
 1. Upload to Anaconda Cloud with `anaconda upload`

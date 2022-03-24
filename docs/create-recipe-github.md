@@ -17,7 +17,11 @@ directory.
 1. Create the recipe using the cran skeleton:
 
     ```
-    conda skeleton cran --use-noarch-generic https://github.com/username/pkgname
+    conda skeleton cran \
+      --use-noarch-generic \
+      --add-cross-r-base \
+      --no-comments \
+      https://github.com/username/pkgname
     ```
 
     If the package doesn't contain any compiled code, the flag
@@ -39,7 +43,7 @@ directory.
 
     ```
     conda build --R 4.0 r-pkgname
-    conda build --R 3.6 r-pkgname
+    conda build --R 4.1 r-pkgname
     ```
 
 1. Upload to Anaconda Cloud with `anaconda upload`
