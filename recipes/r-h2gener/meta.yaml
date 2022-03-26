@@ -1,4 +1,4 @@
-{% set version = '0.1.0' %}
+{% set version = '0.1.2' %}
 {% set posix = 'm2-' if win else '' %}
 {% set native = 'm2w64-' if win else '' %}
 
@@ -7,8 +7,8 @@ package:
   version: {{ version|replace("-", "_") }}
 
 source:
-  git_url: https://github.com/jdblischak/h2gene
-  git_tag: 0.1.0
+  git_url: https://github.com/bogdanlab/h2gene
+  git_tag: 0.1.2
 
 build:
   merge_build_host: True  # [win]
@@ -48,15 +48,22 @@ about:
   license_family: MIT
   license_file:
     - '{{ environ["PREFIX"] }}/lib/R/share/licenses/MIT'
+    - LICENSE
 
 # Package: h2geneR
 # Type: Package
 # Title: Gene-level heritability estimation
-# Version: 0.1.0
+# Version: 0.1.2
 # Authors@R: c(person("Burch","Kathryn",role="aut"), person("Hou","Kangcheng",role=c("aut", "cre"), email="kangchenghou@gmail.com"), person("Ding","Yi",role=c("aut"), email="kangchenghou@gmail.com"), person("Pasaniuc", "Bogdan", role="aut"))
-# License: MIT
+# Depends: R (>= 3.5.0)
+# Imports: MASS, matrixStats, susieR
+# Suggests: dplyr, ggplot2, knitr, patchwork, rmarkdown
+# SystemRequirements: ImageMagick (to build vignette ld.Rmd)
+# License: MIT + file LICENSE
 # URL: https://github.com/bogdanlab/h2gene
 # Description: A method for partitioning gene-level contributions to complex-trait heritability by allele frequency (or any other binary annotations)
 # Encoding: UTF-8
 # LazyData: true
+# LazyDataCompression: xz
 # RoxygenNote: 7.1.1
+# VignetteBuilder: knitr
