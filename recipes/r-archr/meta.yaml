@@ -96,6 +96,11 @@ about:
   license_file:
     - '{{ environ["PREFIX"] }}/lib/R/share/licenses/GPL-2'
 
+extra:
+  skip-lints:
+    - missing_hash
+    - uses_vcs_url
+
 # Package: ArchR
 # Type: Package
 # Date: 2022-04-03
