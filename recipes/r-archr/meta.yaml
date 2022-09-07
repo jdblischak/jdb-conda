@@ -59,16 +59,16 @@ requirements:
   run:
     - r-base
     - {{native}}gcc-libs         # [win]
-    - r-biocgenerics
-    - r-biostrings
-    - r-complexheatmap
-    - r-genomicranges
+    - bioconductor-biocgenerics
+    - bioconductor-biostrings
+    - bioconductor-complexheatmap
+    - bioconductor-genomicranges
     - r-matrix
     - r-rcpp >=0.12.16
-    - r-rsamtools
-    - r-s4vectors >=0.9.25
-    - r-summarizedexperiment
-    - r-chromvar
+    - bioconductor-rsamtools
+    - bioconductor-s4vectors >=0.9.25
+    - bioconductor-summarizedexperiment
+    - bioconductor-chromvar
     - r-data.table
     - r-ggplot2
     - r-ggrepel
@@ -77,10 +77,10 @@ requirements:
     - r-gtools
     - r-magrittr
     - r-matrixstats
-    - r-motifmatchr
+    - bioconductor-motifmatchr
     - r-nabor
     - r-plyr
-    - r-rhdf5
+    - bioconductor-rhdf5
     - r-stringr
     - r-uwot
 
@@ -91,7 +91,7 @@ test:
 
 about:
   home: https://github.com/GreenleafLab/ArchR
-  license: GPL-2
+  license: GPL-2.0-or-later
   summary: This package is designed to streamline scATAC analyses in R.
   license_family: GPL2
   license_file:
