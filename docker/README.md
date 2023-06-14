@@ -6,8 +6,13 @@ testing conda-related things.
 * `test-conda-build/` - For testing conda-build. Based on
   continuumio/miniconda3:latest.
 * `ubuntu-conda-forge/` - For testing conda-forge recipes. Based on Ubuntu
-  16.04.
+  22.04 (Jammy Jellyfish) and Mambaforge.
 * `ubuntu-bioconda` - For testing bioconda recipes. Based on ubuntu-conda-forge.
+
+```sh
+docker build -t ubuntu-conda-forge docker/ubuntu-conda-forge/
+docker build -t ubuntu-bioconda docker/ubuntu-bioconda/
+```
 
 I modeled my Dockerfiles off of the following Dockerfiles:
 

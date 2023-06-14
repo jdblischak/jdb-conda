@@ -1,6 +1,6 @@
 # Ubuntu container for testing conda-forge recipes.
 
-FROM ubuntu:xenial
+FROM ubuntu:jammy
 
 WORKDIR /root
 ENV PATH "/opt/conda/bin:$PATH"
@@ -20,22 +20,22 @@ RUN apt-get update && \
     nano \
     && rm -rf /var/lib/apt/lists/*
 
-# Install the latest Miniconda with Python 3 and update everything.
-RUN curl -s -L https://repo.continuum.io/miniconda/Miniconda3-4.3.21-Linux-x86_64.sh > miniconda.sh && \
-    openssl md5 miniconda.sh | grep c1c15d3baba15bf50293ae963abef853 && \
-    bash miniconda.sh -b -p /opt/conda && \
-    rm miniconda.sh && \
+# Install Mambaforge and update everything.
+RUN curl -s -L https://github.com/conda-forge/miniforge/releases/download/23.1.0-1/Mambaforge-23.1.0-1-Linux-x86_64.sh > mambaforge.sh && \
+    openssl sha256 mambaforge.sh | grep cfb16c47dc2d115c8b114280aa605e322173f029fdb847a45348bf4bd23c62ab && \
+    bash mambaforge.sh -b -p /opt/conda && \
+    rm mambaforge.sh && \
     conda config --set show_channel_urls True && \
-    conda config --add channels conda-forge && \
-    conda update --all --yes && \
+    mamba update --all --yes && \
     conda clean -tipy
 
 # Install conda build and deployment tools.
-RUN conda install --yes --quiet conda-build anaconda-client jinja2 setuptools && \
-    conda clean -tipsy
+RUN mamba install --yes --quiet conda-build anaconda-client jinja2 setuptools && \
+    conda clean -tipy
 
 # Install tools for interactive analysis
-RUN conda install --yes --quiet ipython ipdb
+RUN mamba install --yes --quiet ipython ipdb && \
+    conda clean -tipy
 
 RUN git clone https://github.com/conda-forge/staged-recipes.git ~/staged-recipes
 
