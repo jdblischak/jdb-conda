@@ -11,13 +11,13 @@ ENV LANG en_US.UTF-8
 # Install basic requirements.
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
-                   bzip2 \
-		   ca-certificates \
-		   curl \
-		   emacs \
-		   git \
-		   less \
-                   nano \
+    bzip2 \
+    ca-certificates \
+    curl \
+    emacs \
+    git \
+    less \
+    nano \
     && rm -rf /var/lib/apt/lists/*
 
 # Install the latest Miniconda with Python 3 and update everything.
